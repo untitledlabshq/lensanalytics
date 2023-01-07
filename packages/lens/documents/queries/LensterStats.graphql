@@ -1,0 +1,11 @@
+query LensterStats {
+  globalProtocolStats(request: { sources: "Lenster" }) {
+    totalProfiles
+    totalPosts
+    totalBurntProfiles
+    totalMirrors
+    totalComments
+    totalCollects
+    totalFollows
+  }
+}
