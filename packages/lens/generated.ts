@@ -17528,9 +17528,11 @@ export type HasTxHashBeenIndexedQuery = {
       };
 };
 
-export type LensterStatsQueryVariables = Exact<{ [key: string]: never }>;
+export type LensStatsQueryVariables = Exact<{
+  request: GlobalProtocolStatsRequest;
+}>;
 
-export type LensterStatsQuery = {
+export type LensStatsQuery = {
   __typename?: "Query";
   globalProtocolStats: {
     __typename?: "GlobalProtocolStats";
@@ -35717,9 +35719,9 @@ export type HasTxHashBeenIndexedQueryResult = Apollo.QueryResult<
   HasTxHashBeenIndexedQuery,
   HasTxHashBeenIndexedQueryVariables
 >;
-export const LensterStatsDocument = gql`
-  query LensterStats {
-    globalProtocolStats(request: { sources: "Lenster" }) {
+export const LensStatsDocument = gql`
+  query LensStats($request: GlobalProtocolStatsRequest!) {
+    globalProtocolStats(request: $request) {
       totalProfiles
       totalPosts
       totalBurntProfiles
@@ -35732,53 +35734,49 @@ export const LensterStatsDocument = gql`
 `;
 
 /**
- * __useLensterStatsQuery__
+ * __useLensStatsQuery__
  *
- * To run a query within a React component, call `useLensterStatsQuery` and pass it any options that fit your needs.
- * When your component renders, `useLensterStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useLensStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLensStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLensterStatsQuery({
+ * const { data, loading, error } = useLensStatsQuery({
  *   variables: {
+ *      request: // value for 'request'
  *   },
  * });
  */
-export function useLensterStatsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    LensterStatsQuery,
-    LensterStatsQueryVariables
-  >
+export function useLensStatsQuery(
+  baseOptions: Apollo.QueryHookOptions<LensStatsQuery, LensStatsQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<LensterStatsQuery, LensterStatsQueryVariables>(
-    LensterStatsDocument,
+  return Apollo.useQuery<LensStatsQuery, LensStatsQueryVariables>(
+    LensStatsDocument,
     options
   );
 }
-export function useLensterStatsLazyQuery(
+export function useLensStatsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    LensterStatsQuery,
-    LensterStatsQueryVariables
+    LensStatsQuery,
+    LensStatsQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<LensterStatsQuery, LensterStatsQueryVariables>(
-    LensterStatsDocument,
+  return Apollo.useLazyQuery<LensStatsQuery, LensStatsQueryVariables>(
+    LensStatsDocument,
     options
   );
 }
-export type LensterStatsQueryHookResult = ReturnType<
-  typeof useLensterStatsQuery
+export type LensStatsQueryHookResult = ReturnType<typeof useLensStatsQuery>;
+export type LensStatsLazyQueryHookResult = ReturnType<
+  typeof useLensStatsLazyQuery
 >;
-export type LensterStatsLazyQueryHookResult = ReturnType<
-  typeof useLensterStatsLazyQuery
->;
-export type LensterStatsQueryResult = Apollo.QueryResult<
-  LensterStatsQuery,
-  LensterStatsQueryVariables
+export type LensStatsQueryResult = Apollo.QueryResult<
+  LensStatsQuery,
+  LensStatsQueryVariables
 >;
 export const LikesDocument = gql`
   query Likes($request: WhoReactedPublicationRequest!) {
