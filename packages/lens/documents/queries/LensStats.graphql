@@ -1,4 +1,4 @@
-query LensStats($request: GlobalProtocolStatsRequest!) {
+query LensStats($request: GlobalProtocolStatsRequest) {
   globalProtocolStats(request: $request) {
     totalProfiles
     totalPosts

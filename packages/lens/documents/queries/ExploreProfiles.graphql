@@ -1,0 +1,29 @@
+query ExploreProfiles($request: ExploreProfilesRequest!) {
+ exploreProfiles(request: $request) {
+    items {
+      id
+      name
+      picture {
+        ... on MediaSet {
+          original {
+            url
+          }
+        }
+      }
+      handle
+      stats {
+        totalFollowers
+        totalPosts
+        totalComments
+        totalMirrors
+        totalCollects
+        totalPublications
+      }
+    }
+    pageInfo {
+      prev
+      next
+      totalCount
+    }
+  }
+}
