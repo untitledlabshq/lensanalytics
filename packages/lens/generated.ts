@@ -13900,6 +13900,45 @@ export type ExploreFeedQuery = {
   };
 };
 
+export type ExploreProfilesQueryVariables = Exact<{
+  request: ExploreProfilesRequest;
+}>;
+
+export type ExploreProfilesQuery = {
+  __typename?: "Query";
+  exploreProfiles: {
+    __typename?: "ExploreProfileResult";
+    items: Array<{
+      __typename?: "Profile";
+      id: any;
+      name?: string | null;
+      handle: any;
+      picture?:
+        | {
+            __typename?: "MediaSet";
+            original: { __typename?: "Media"; url: any };
+          }
+        | { __typename?: "NftImage" }
+        | null;
+      stats: {
+        __typename?: "ProfileStats";
+        totalFollowers: number;
+        totalPosts: number;
+        totalComments: number;
+        totalMirrors: number;
+        totalCollects: number;
+        totalPublications: number;
+      };
+    }>;
+    pageInfo: {
+      __typename?: "PaginatedResultInfo";
+      prev?: any | null;
+      next?: any | null;
+      totalCount?: number | null;
+    };
+  };
+};
+
 export type FeedHighlightsQueryVariables = Exact<{
   request: FeedHighlightsRequest;
   reactionRequest?: InputMaybe<ReactionFieldResolverRequest>;
@@ -17529,7 +17568,7 @@ export type HasTxHashBeenIndexedQuery = {
 };
 
 export type LensStatsQueryVariables = Exact<{
-  request: GlobalProtocolStatsRequest;
+  request?: InputMaybe<GlobalProtocolStatsRequest>;
 }>;
 
 export type LensStatsQuery = {
@@ -35378,6 +35417,88 @@ export type ExploreFeedQueryResult = Apollo.QueryResult<
   ExploreFeedQuery,
   ExploreFeedQueryVariables
 >;
+export const ExploreProfilesDocument = gql`
+  query ExploreProfiles($request: ExploreProfilesRequest!) {
+    exploreProfiles(request: $request) {
+      items {
+        id
+        name
+        picture {
+          ... on MediaSet {
+            original {
+              url
+            }
+          }
+        }
+        handle
+        stats {
+          totalFollowers
+          totalPosts
+          totalComments
+          totalMirrors
+          totalCollects
+          totalPublications
+        }
+      }
+      pageInfo {
+        prev
+        next
+        totalCount
+      }
+    }
+  }
+`;
+
+/**
+ * __useExploreProfilesQuery__
+ *
+ * To run a query within a React component, call `useExploreProfilesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExploreProfilesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExploreProfilesQuery({
+ *   variables: {
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function useExploreProfilesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    ExploreProfilesQuery,
+    ExploreProfilesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ExploreProfilesQuery, ExploreProfilesQueryVariables>(
+    ExploreProfilesDocument,
+    options
+  );
+}
+export function useExploreProfilesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ExploreProfilesQuery,
+    ExploreProfilesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    ExploreProfilesQuery,
+    ExploreProfilesQueryVariables
+  >(ExploreProfilesDocument, options);
+}
+export type ExploreProfilesQueryHookResult = ReturnType<
+  typeof useExploreProfilesQuery
+>;
+export type ExploreProfilesLazyQueryHookResult = ReturnType<
+  typeof useExploreProfilesLazyQuery
+>;
+export type ExploreProfilesQueryResult = Apollo.QueryResult<
+  ExploreProfilesQuery,
+  ExploreProfilesQueryVariables
+>;
 export const FeedHighlightsDocument = gql`
   query FeedHighlights(
     $request: FeedHighlightsRequest!
@@ -35720,7 +35841,7 @@ export type HasTxHashBeenIndexedQueryResult = Apollo.QueryResult<
   HasTxHashBeenIndexedQueryVariables
 >;
 export const LensStatsDocument = gql`
-  query LensStats($request: GlobalProtocolStatsRequest!) {
+  query LensStats($request: GlobalProtocolStatsRequest) {
     globalProtocolStats(request: $request) {
       totalProfiles
       totalPosts
@@ -35750,7 +35871,7 @@ export const LensStatsDocument = gql`
  * });
  */
 export function useLensStatsQuery(
-  baseOptions: Apollo.QueryHookOptions<LensStatsQuery, LensStatsQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<LensStatsQuery, LensStatsQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<LensStatsQuery, LensStatsQueryVariables>(
