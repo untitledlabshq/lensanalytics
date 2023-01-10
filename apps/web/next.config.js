@@ -3,4 +3,5 @@ module.exports = {
   experimental: {
     transpilePackages: ["lens"],
   },
+  swcMinify: false,
 };
