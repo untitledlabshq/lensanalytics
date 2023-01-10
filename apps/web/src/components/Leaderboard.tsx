@@ -225,7 +225,7 @@ const Leaderboard: FC<Props> = ({ className }) => {
           </Menu>
         </div>
       </div>
-      <Table columns={columns} data={profiles} />
+      {profiles && <Table columns={columns} data={profiles} />}
       {/* Pagination */}
       {
         <div className="w-full flex items-center justify-between md:justify-end md:space-x-4 mt-4">
