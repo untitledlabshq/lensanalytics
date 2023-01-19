@@ -20,7 +20,7 @@ const Table: FC<Props> = ({ columns, data }) => {
   });
 
   return (
-    <div className="border border-slate-200">
+    <div className="relative overflow-x-auto border border-slate-200">
       <table className="border-collapse table-auto w-full bg-white text-sm">
         <thead className="border-b border-slate-200">
           {table.getHeaderGroups().map((headerGroup) => (
