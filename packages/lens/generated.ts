@@ -105,15 +105,6 @@ export type AccessConditionOutput = {
   token?: Maybe<Erc20OwnershipOutput>;
 };
 
-export type AchRequest = {
-  ethereumAddress: Scalars["EthereumAddress"];
-  freeTextHandle?: InputMaybe<Scalars["Boolean"]>;
-  handle?: InputMaybe<Scalars["CreateHandle"]>;
-  overrideAlreadyClaimed: Scalars["Boolean"];
-  overrideTradeMark: Scalars["Boolean"];
-  secret: Scalars["String"];
-};
-
 /** The request object to add interests to a profile */
 export type AddProfileInterestsRequest = {
   /** The profile interest to add */
@@ -946,10 +937,6 @@ export type CreateUnfollowBroadcastItemResult = {
   typedData: CreateBurnEip712TypedData;
 };
 
-export type CurRequest = {
-  secret: Scalars["String"];
-};
-
 /** The custom filters types */
 export enum CustomFiltersTypes {
   Gardeners = "GARDENERS",
@@ -1557,12 +1544,6 @@ export type HasTxHashBeenIndexedRequest = {
   txId?: InputMaybe<Scalars["TxId"]>;
 };
 
-export type HelRequest = {
-  handle: Scalars["Handle"];
-  remove: Scalars["Boolean"];
-  secret: Scalars["String"];
-};
-
 export type HidePublicationRequest = {
   /** Publication id */
   publicationId: Scalars["InternalPublicationId"];
@@ -1874,7 +1855,6 @@ export type ModuleInfo = {
 
 export type Mutation = {
   __typename?: "Mutation";
-  ach?: Maybe<Scalars["Void"]>;
   /** Adds profile interests to the given profile */
   addProfileInterests?: Maybe<Scalars["Void"]>;
   addReaction?: Maybe<Scalars["Void"]>;
@@ -1902,7 +1882,6 @@ export type Mutation = {
   createSetProfileMetadataViaDispatcher: RelayResult;
   createToggleFollowTypedData: CreateToggleFollowBroadcastItemResult;
   createUnfollowTypedData: CreateUnfollowBroadcastItemResult;
-  hel?: Maybe<Scalars["Void"]>;
   hidePublication?: Maybe<Scalars["Void"]>;
   idKitPhoneVerifyWebhook: IdKitPhoneVerifyWebhookResultStatusType;
   proxyAction: Scalars["ProxyActionId"];
@@ -1911,10 +1890,6 @@ export type Mutation = {
   removeProfileInterests?: Maybe<Scalars["Void"]>;
   removeReaction?: Maybe<Scalars["Void"]>;
   reportPublication?: Maybe<Scalars["Void"]>;
-};
-
-export type MutationAchArgs = {
-  request: AchRequest;
 };
 
 export type MutationAddProfileInterestsArgs = {
@@ -2033,10 +2008,6 @@ export type MutationCreateToggleFollowTypedDataArgs = {
 export type MutationCreateUnfollowTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: UnfollowRequest;
-};
-
-export type MutationHelArgs = {
-  request: HelRequest;
 };
 
 export type MutationHidePublicationArgs = {
@@ -3067,7 +3038,6 @@ export type Query = {
   challenge: AuthChallengeResult;
   claimableHandles: ClaimableHandles;
   claimableStatus: ClaimStatus;
-  cur: Array<Scalars["String"]>;
   defaultProfile?: Maybe<Profile>;
   doesFollow: Array<DoesFollowResponse>;
   enabledModuleCurrencies: Array<Erc20>;
@@ -3105,7 +3075,6 @@ export type Query = {
   publicationRevenue?: Maybe<PublicationRevenue>;
   publications: PaginatedPublicationResult;
   recommendedProfiles: Array<Profile>;
-  rel?: Maybe<Scalars["Void"]>;
   search: SearchResult;
   /** @deprecated You should be using feed, this will not be supported after 15th November 2021, please migrate. */
   timeline: PaginatedTimelineResult;
@@ -3128,10 +3097,6 @@ export type QueryApprovedModuleAllowanceAmountArgs = {
 
 export type QueryChallengeArgs = {
   request: ChallengeRequest;
-};
-
-export type QueryCurArgs = {
-  request: CurRequest;
 };
 
 export type QueryDefaultProfileArgs = {
@@ -3258,10 +3223,6 @@ export type QueryRecommendedProfilesArgs = {
   options?: InputMaybe<RecommendedProfileOptions>;
 };
 
-export type QueryRelArgs = {
-  request: RelRequest;
-};
-
 export type QuerySearchArgs = {
   request: SearchQueryRequest;
 };
@@ -3349,11 +3310,6 @@ export enum ReferenceModules {
 export type RefreshRequest = {
   /** The refresh token */
   refreshToken: Scalars["Jwt"];
-};
-
-export type RelRequest = {
-  ethereumAddress: Scalars["EthereumAddress"];
-  secret: Scalars["String"];
 };
 
 export type RelayError = {
@@ -13918,7 +13874,7 @@ export type ExploreProfilesQuery = {
             __typename?: "MediaSet";
             original: { __typename?: "Media"; url: any };
           }
-        | { __typename?: "NftImage" }
+        | { __typename?: "NftImage"; uri: any }
         | null;
       stats: {
         __typename?: "ProfileStats";
@@ -18362,6 +18318,7 @@ export type ProfileQuery = {
     bio?: string | null;
     metadata?: any | null;
     followNftAddress?: any | null;
+    isDefault: boolean;
     isFollowedByMe: boolean;
     isFollowing: boolean;
     attributes?: Array<{
@@ -21919,6 +21876,7010 @@ export type ProfileInterestsQueryVariables = Exact<{ [key: string]: never }>;
 export type ProfileInterestsQuery = {
   __typename?: "Query";
   profileInterests: Array<any>;
+};
+
+export type ProfilePublicationRevenueQueryVariables = Exact<{
+  request: ProfilePublicationRevenueQueryRequest;
+  reactionRequest?: InputMaybe<ReactionFieldResolverRequest>;
+  profileId?: InputMaybe<Scalars["ProfileId"]>;
+}>;
+
+export type ProfilePublicationRevenueQuery = {
+  __typename?: "Query";
+  profilePublicationRevenue: {
+    __typename?: "ProfilePublicationRevenueResult";
+    items: Array<{
+      __typename?: "PublicationRevenue";
+      publication:
+        | {
+            __typename: "Comment";
+            id: any;
+            reaction?: ReactionTypes | null;
+            mirrors: Array<any>;
+            hasCollectedByMe: boolean;
+            onChainContentURI: string;
+            hidden: boolean;
+            createdAt: any;
+            appId?: any | null;
+            profile: {
+              __typename?: "Profile";
+              id: any;
+              name?: string | null;
+              handle: any;
+              bio?: string | null;
+              ownedBy: any;
+              isFollowedByMe: boolean;
+              stats: {
+                __typename?: "ProfileStats";
+                totalFollowers: number;
+                totalFollowing: number;
+              };
+              attributes?: Array<{
+                __typename?: "Attribute";
+                key: string;
+                value: string;
+              }> | null;
+              picture?:
+                | {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  }
+                | { __typename?: "NftImage"; uri: any }
+                | null;
+              followModule?:
+                | { __typename: "FeeFollowModuleSettings" }
+                | { __typename: "ProfileFollowModuleSettings" }
+                | { __typename: "RevertFollowModuleSettings" }
+                | { __typename: "UnknownFollowModuleSettings" }
+                | null;
+            };
+            canComment: { __typename?: "CanCommentResponse"; result: boolean };
+            canMirror: { __typename?: "CanMirrorResponse"; result: boolean };
+            canDecrypt: {
+              __typename?: "CanDecryptResponse";
+              result: boolean;
+              reasons?: Array<DecryptFailReason> | null;
+            };
+            collectedBy?: {
+              __typename?: "Wallet";
+              address: any;
+              defaultProfile?: {
+                __typename?: "Profile";
+                id: any;
+                name?: string | null;
+                handle: any;
+                bio?: string | null;
+                ownedBy: any;
+                isFollowedByMe: boolean;
+                stats: {
+                  __typename?: "ProfileStats";
+                  totalFollowers: number;
+                  totalFollowing: number;
+                };
+                attributes?: Array<{
+                  __typename?: "Attribute";
+                  key: string;
+                  value: string;
+                }> | null;
+                picture?:
+                  | {
+                      __typename?: "MediaSet";
+                      original: { __typename?: "Media"; url: any };
+                    }
+                  | { __typename?: "NftImage"; uri: any }
+                  | null;
+                followModule?:
+                  | { __typename: "FeeFollowModuleSettings" }
+                  | { __typename: "ProfileFollowModuleSettings" }
+                  | { __typename: "RevertFollowModuleSettings" }
+                  | { __typename: "UnknownFollowModuleSettings" }
+                  | null;
+              } | null;
+            } | null;
+            collectModule:
+              | {
+                  __typename?: "FeeCollectModuleSettings";
+                  type: CollectModules;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | {
+                  __typename?: "FreeCollectModuleSettings";
+                  type: CollectModules;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                }
+              | {
+                  __typename?: "LimitedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  collectLimit: string;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | {
+                  __typename?: "LimitedTimedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  collectLimit: string;
+                  endTimestamp: any;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | { __typename?: "RevertCollectModuleSettings" }
+              | {
+                  __typename?: "TimedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  endTimestamp: any;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | { __typename?: "UnknownCollectModuleSettings" };
+            stats: {
+              __typename?: "PublicationStats";
+              totalUpvotes: number;
+              totalAmountOfMirrors: number;
+              totalAmountOfCollects: number;
+              totalAmountOfComments: number;
+            };
+            metadata: {
+              __typename?: "MetadataOutput";
+              name?: string | null;
+              description?: any | null;
+              content?: any | null;
+              image?: any | null;
+              attributes: Array<{
+                __typename?: "MetadataAttributeOutput";
+                traitType?: string | null;
+                value?: string | null;
+              }>;
+              cover?: {
+                __typename?: "MediaSet";
+                original: { __typename?: "Media"; url: any };
+              } | null;
+              media: Array<{
+                __typename?: "MediaSet";
+                original: {
+                  __typename?: "Media";
+                  url: any;
+                  mimeType?: any | null;
+                };
+              }>;
+              encryptionParams?: {
+                __typename?: "EncryptionParamsOutput";
+                accessCondition: {
+                  __typename?: "AccessConditionOutput";
+                  or?: {
+                    __typename?: "OrConditionOutput";
+                    criteria: Array<{
+                      __typename?: "AccessConditionOutput";
+                      and?: {
+                        __typename?: "AndConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                      or?: {
+                        __typename?: "OrConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                      nft?: {
+                        __typename?: "NftOwnershipOutput";
+                        contractAddress: any;
+                        chainID: any;
+                        contractType: ContractType;
+                        tokenIds?: Array<any> | null;
+                      } | null;
+                      eoa?: {
+                        __typename?: "EoaOwnershipOutput";
+                        address: any;
+                      } | null;
+                      token?: {
+                        __typename?: "Erc20OwnershipOutput";
+                        contractAddress: any;
+                        amount: string;
+                        chainID: any;
+                        condition: ScalarOperator;
+                        decimals: number;
+                      } | null;
+                      follow?: {
+                        __typename?: "FollowConditionOutput";
+                        profileId: any;
+                      } | null;
+                      collect?: {
+                        __typename?: "CollectConditionOutput";
+                        publicationId?: any | null;
+                        thisPublication?: boolean | null;
+                      } | null;
+                    }>;
+                  } | null;
+                };
+              } | null;
+            };
+            commentOn?:
+              | {
+                  __typename?: "Comment";
+                  id: any;
+                  reaction?: ReactionTypes | null;
+                  mirrors: Array<any>;
+                  hasCollectedByMe: boolean;
+                  onChainContentURI: string;
+                  hidden: boolean;
+                  createdAt: any;
+                  profile: {
+                    __typename?: "Profile";
+                    id: any;
+                    name?: string | null;
+                    handle: any;
+                    bio?: string | null;
+                    ownedBy: any;
+                    isFollowedByMe: boolean;
+                    stats: {
+                      __typename?: "ProfileStats";
+                      totalFollowers: number;
+                      totalFollowing: number;
+                    };
+                    attributes?: Array<{
+                      __typename?: "Attribute";
+                      key: string;
+                      value: string;
+                    }> | null;
+                    picture?:
+                      | {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        }
+                      | { __typename?: "NftImage"; uri: any }
+                      | null;
+                    followModule?:
+                      | { __typename: "FeeFollowModuleSettings" }
+                      | { __typename: "ProfileFollowModuleSettings" }
+                      | { __typename: "RevertFollowModuleSettings" }
+                      | { __typename: "UnknownFollowModuleSettings" }
+                      | null;
+                  };
+                  canComment: {
+                    __typename?: "CanCommentResponse";
+                    result: boolean;
+                  };
+                  canMirror: {
+                    __typename?: "CanMirrorResponse";
+                    result: boolean;
+                  };
+                  canDecrypt: {
+                    __typename?: "CanDecryptResponse";
+                    result: boolean;
+                    reasons?: Array<DecryptFailReason> | null;
+                  };
+                  collectedBy?: {
+                    __typename?: "Wallet";
+                    address: any;
+                    defaultProfile?: {
+                      __typename?: "Profile";
+                      handle: any;
+                    } | null;
+                  } | null;
+                  collectModule:
+                    | {
+                        __typename?: "FeeCollectModuleSettings";
+                        type: CollectModules;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | {
+                        __typename?: "FreeCollectModuleSettings";
+                        type: CollectModules;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                      }
+                    | {
+                        __typename?: "LimitedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        collectLimit: string;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | {
+                        __typename?: "LimitedTimedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        collectLimit: string;
+                        endTimestamp: any;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | { __typename?: "RevertCollectModuleSettings" }
+                    | {
+                        __typename?: "TimedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        endTimestamp: any;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | { __typename?: "UnknownCollectModuleSettings" };
+                  metadata: {
+                    __typename?: "MetadataOutput";
+                    name?: string | null;
+                    description?: any | null;
+                    content?: any | null;
+                    image?: any | null;
+                    attributes: Array<{
+                      __typename?: "MetadataAttributeOutput";
+                      traitType?: string | null;
+                      value?: string | null;
+                    }>;
+                    cover?: {
+                      __typename?: "MediaSet";
+                      original: { __typename?: "Media"; url: any };
+                    } | null;
+                    media: Array<{
+                      __typename?: "MediaSet";
+                      original: {
+                        __typename?: "Media";
+                        url: any;
+                        mimeType?: any | null;
+                      };
+                    }>;
+                    encryptionParams?: {
+                      __typename?: "EncryptionParamsOutput";
+                      accessCondition: {
+                        __typename?: "AccessConditionOutput";
+                        or?: {
+                          __typename?: "OrConditionOutput";
+                          criteria: Array<{
+                            __typename?: "AccessConditionOutput";
+                            and?: {
+                              __typename?: "AndConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                            or?: {
+                              __typename?: "OrConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                            nft?: {
+                              __typename?: "NftOwnershipOutput";
+                              contractAddress: any;
+                              chainID: any;
+                              contractType: ContractType;
+                              tokenIds?: Array<any> | null;
+                            } | null;
+                            eoa?: {
+                              __typename?: "EoaOwnershipOutput";
+                              address: any;
+                            } | null;
+                            token?: {
+                              __typename?: "Erc20OwnershipOutput";
+                              contractAddress: any;
+                              amount: string;
+                              chainID: any;
+                              condition: ScalarOperator;
+                              decimals: number;
+                            } | null;
+                            follow?: {
+                              __typename?: "FollowConditionOutput";
+                              profileId: any;
+                            } | null;
+                            collect?: {
+                              __typename?: "CollectConditionOutput";
+                              publicationId?: any | null;
+                              thisPublication?: boolean | null;
+                            } | null;
+                          }>;
+                        } | null;
+                      };
+                    } | null;
+                  };
+                  stats: {
+                    __typename?: "PublicationStats";
+                    totalUpvotes: number;
+                    totalAmountOfMirrors: number;
+                    totalAmountOfCollects: number;
+                    totalAmountOfComments: number;
+                  };
+                  mainPost:
+                    | {
+                        __typename?: "Mirror";
+                        id: any;
+                        reaction?: ReactionTypes | null;
+                        hidden: boolean;
+                        createdAt: any;
+                        appId?: any | null;
+                        profile: {
+                          __typename?: "Profile";
+                          id: any;
+                          name?: string | null;
+                          handle: any;
+                          bio?: string | null;
+                          ownedBy: any;
+                          isFollowedByMe: boolean;
+                          stats: {
+                            __typename?: "ProfileStats";
+                            totalFollowers: number;
+                            totalFollowing: number;
+                          };
+                          attributes?: Array<{
+                            __typename?: "Attribute";
+                            key: string;
+                            value: string;
+                          }> | null;
+                          picture?:
+                            | {
+                                __typename?: "MediaSet";
+                                original: { __typename?: "Media"; url: any };
+                              }
+                            | { __typename?: "NftImage"; uri: any }
+                            | null;
+                          followModule?:
+                            | { __typename: "FeeFollowModuleSettings" }
+                            | { __typename: "ProfileFollowModuleSettings" }
+                            | { __typename: "RevertFollowModuleSettings" }
+                            | { __typename: "UnknownFollowModuleSettings" }
+                            | null;
+                        };
+                        canComment: {
+                          __typename?: "CanCommentResponse";
+                          result: boolean;
+                        };
+                        canMirror: {
+                          __typename?: "CanMirrorResponse";
+                          result: boolean;
+                        };
+                        canDecrypt: {
+                          __typename?: "CanDecryptResponse";
+                          result: boolean;
+                          reasons?: Array<DecryptFailReason> | null;
+                        };
+                        collectModule:
+                          | {
+                              __typename?: "FeeCollectModuleSettings";
+                              type: CollectModules;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | {
+                              __typename?: "FreeCollectModuleSettings";
+                              type: CollectModules;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                            }
+                          | {
+                              __typename?: "LimitedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              collectLimit: string;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | {
+                              __typename?: "LimitedTimedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              collectLimit: string;
+                              endTimestamp: any;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | { __typename?: "RevertCollectModuleSettings" }
+                          | {
+                              __typename?: "TimedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              endTimestamp: any;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | { __typename?: "UnknownCollectModuleSettings" };
+                        stats: {
+                          __typename?: "PublicationStats";
+                          totalUpvotes: number;
+                          totalAmountOfMirrors: number;
+                          totalAmountOfCollects: number;
+                          totalAmountOfComments: number;
+                        };
+                        metadata: {
+                          __typename?: "MetadataOutput";
+                          name?: string | null;
+                          description?: any | null;
+                          content?: any | null;
+                          image?: any | null;
+                          attributes: Array<{
+                            __typename?: "MetadataAttributeOutput";
+                            traitType?: string | null;
+                            value?: string | null;
+                          }>;
+                          cover?: {
+                            __typename?: "MediaSet";
+                            original: { __typename?: "Media"; url: any };
+                          } | null;
+                          media: Array<{
+                            __typename?: "MediaSet";
+                            original: {
+                              __typename?: "Media";
+                              url: any;
+                              mimeType?: any | null;
+                            };
+                          }>;
+                          encryptionParams?: {
+                            __typename?: "EncryptionParamsOutput";
+                            accessCondition: {
+                              __typename?: "AccessConditionOutput";
+                              or?: {
+                                __typename?: "OrConditionOutput";
+                                criteria: Array<{
+                                  __typename?: "AccessConditionOutput";
+                                  and?: {
+                                    __typename?: "AndConditionOutput";
+                                    criteria: Array<{
+                                      __typename?: "AccessConditionOutput";
+                                      nft?: {
+                                        __typename?: "NftOwnershipOutput";
+                                        contractAddress: any;
+                                        chainID: any;
+                                        contractType: ContractType;
+                                        tokenIds?: Array<any> | null;
+                                      } | null;
+                                      eoa?: {
+                                        __typename?: "EoaOwnershipOutput";
+                                        address: any;
+                                      } | null;
+                                      token?: {
+                                        __typename?: "Erc20OwnershipOutput";
+                                        contractAddress: any;
+                                        amount: string;
+                                        chainID: any;
+                                        condition: ScalarOperator;
+                                        decimals: number;
+                                      } | null;
+                                      follow?: {
+                                        __typename?: "FollowConditionOutput";
+                                        profileId: any;
+                                      } | null;
+                                      collect?: {
+                                        __typename?: "CollectConditionOutput";
+                                        publicationId?: any | null;
+                                        thisPublication?: boolean | null;
+                                      } | null;
+                                    }>;
+                                  } | null;
+                                  or?: {
+                                    __typename?: "OrConditionOutput";
+                                    criteria: Array<{
+                                      __typename?: "AccessConditionOutput";
+                                      nft?: {
+                                        __typename?: "NftOwnershipOutput";
+                                        contractAddress: any;
+                                        chainID: any;
+                                        contractType: ContractType;
+                                        tokenIds?: Array<any> | null;
+                                      } | null;
+                                      eoa?: {
+                                        __typename?: "EoaOwnershipOutput";
+                                        address: any;
+                                      } | null;
+                                      token?: {
+                                        __typename?: "Erc20OwnershipOutput";
+                                        contractAddress: any;
+                                        amount: string;
+                                        chainID: any;
+                                        condition: ScalarOperator;
+                                        decimals: number;
+                                      } | null;
+                                      follow?: {
+                                        __typename?: "FollowConditionOutput";
+                                        profileId: any;
+                                      } | null;
+                                      collect?: {
+                                        __typename?: "CollectConditionOutput";
+                                        publicationId?: any | null;
+                                        thisPublication?: boolean | null;
+                                      } | null;
+                                    }>;
+                                  } | null;
+                                  nft?: {
+                                    __typename?: "NftOwnershipOutput";
+                                    contractAddress: any;
+                                    chainID: any;
+                                    contractType: ContractType;
+                                    tokenIds?: Array<any> | null;
+                                  } | null;
+                                  eoa?: {
+                                    __typename?: "EoaOwnershipOutput";
+                                    address: any;
+                                  } | null;
+                                  token?: {
+                                    __typename?: "Erc20OwnershipOutput";
+                                    contractAddress: any;
+                                    amount: string;
+                                    chainID: any;
+                                    condition: ScalarOperator;
+                                    decimals: number;
+                                  } | null;
+                                  follow?: {
+                                    __typename?: "FollowConditionOutput";
+                                    profileId: any;
+                                  } | null;
+                                  collect?: {
+                                    __typename?: "CollectConditionOutput";
+                                    publicationId?: any | null;
+                                    thisPublication?: boolean | null;
+                                  } | null;
+                                }>;
+                              } | null;
+                            };
+                          } | null;
+                        };
+                        mirrorOf:
+                          | {
+                              __typename?: "Comment";
+                              id: any;
+                              reaction?: ReactionTypes | null;
+                              mirrors: Array<any>;
+                              onChainContentURI: string;
+                              createdAt: any;
+                              profile: {
+                                __typename?: "Profile";
+                                id: any;
+                                name?: string | null;
+                                handle: any;
+                                bio?: string | null;
+                                ownedBy: any;
+                                isFollowedByMe: boolean;
+                                stats: {
+                                  __typename?: "ProfileStats";
+                                  totalFollowers: number;
+                                  totalFollowing: number;
+                                };
+                                attributes?: Array<{
+                                  __typename?: "Attribute";
+                                  key: string;
+                                  value: string;
+                                }> | null;
+                                picture?:
+                                  | {
+                                      __typename?: "MediaSet";
+                                      original: {
+                                        __typename?: "Media";
+                                        url: any;
+                                      };
+                                    }
+                                  | { __typename?: "NftImage"; uri: any }
+                                  | null;
+                                followModule?:
+                                  | { __typename: "FeeFollowModuleSettings" }
+                                  | {
+                                      __typename: "ProfileFollowModuleSettings";
+                                    }
+                                  | { __typename: "RevertFollowModuleSettings" }
+                                  | {
+                                      __typename: "UnknownFollowModuleSettings";
+                                    }
+                                  | null;
+                              };
+                              canComment: {
+                                __typename?: "CanCommentResponse";
+                                result: boolean;
+                              };
+                              canMirror: {
+                                __typename?: "CanMirrorResponse";
+                                result: boolean;
+                              };
+                              canDecrypt: {
+                                __typename?: "CanDecryptResponse";
+                                result: boolean;
+                                reasons?: Array<DecryptFailReason> | null;
+                              };
+                              stats: {
+                                __typename?: "PublicationStats";
+                                totalUpvotes: number;
+                                totalAmountOfMirrors: number;
+                                totalAmountOfCollects: number;
+                                totalAmountOfComments: number;
+                              };
+                            }
+                          | {
+                              __typename?: "Post";
+                              id: any;
+                              reaction?: ReactionTypes | null;
+                              mirrors: Array<any>;
+                              hasCollectedByMe: boolean;
+                              onChainContentURI: string;
+                              hidden: boolean;
+                              createdAt: any;
+                              appId?: any | null;
+                              profile: {
+                                __typename?: "Profile";
+                                id: any;
+                                name?: string | null;
+                                handle: any;
+                                bio?: string | null;
+                                ownedBy: any;
+                                isFollowedByMe: boolean;
+                                stats: {
+                                  __typename?: "ProfileStats";
+                                  totalFollowers: number;
+                                  totalFollowing: number;
+                                };
+                                attributes?: Array<{
+                                  __typename?: "Attribute";
+                                  key: string;
+                                  value: string;
+                                }> | null;
+                                picture?:
+                                  | {
+                                      __typename?: "MediaSet";
+                                      original: {
+                                        __typename?: "Media";
+                                        url: any;
+                                      };
+                                    }
+                                  | { __typename?: "NftImage"; uri: any }
+                                  | null;
+                                followModule?:
+                                  | { __typename: "FeeFollowModuleSettings" }
+                                  | {
+                                      __typename: "ProfileFollowModuleSettings";
+                                    }
+                                  | { __typename: "RevertFollowModuleSettings" }
+                                  | {
+                                      __typename: "UnknownFollowModuleSettings";
+                                    }
+                                  | null;
+                              };
+                              canComment: {
+                                __typename?: "CanCommentResponse";
+                                result: boolean;
+                              };
+                              canMirror: {
+                                __typename?: "CanMirrorResponse";
+                                result: boolean;
+                              };
+                              canDecrypt: {
+                                __typename?: "CanDecryptResponse";
+                                result: boolean;
+                                reasons?: Array<DecryptFailReason> | null;
+                              };
+                              collectedBy?: {
+                                __typename?: "Wallet";
+                                address: any;
+                                defaultProfile?: {
+                                  __typename?: "Profile";
+                                  id: any;
+                                  name?: string | null;
+                                  handle: any;
+                                  bio?: string | null;
+                                  ownedBy: any;
+                                  isFollowedByMe: boolean;
+                                  stats: {
+                                    __typename?: "ProfileStats";
+                                    totalFollowers: number;
+                                    totalFollowing: number;
+                                  };
+                                  attributes?: Array<{
+                                    __typename?: "Attribute";
+                                    key: string;
+                                    value: string;
+                                  }> | null;
+                                  picture?:
+                                    | {
+                                        __typename?: "MediaSet";
+                                        original: {
+                                          __typename?: "Media";
+                                          url: any;
+                                        };
+                                      }
+                                    | { __typename?: "NftImage"; uri: any }
+                                    | null;
+                                  followModule?:
+                                    | { __typename: "FeeFollowModuleSettings" }
+                                    | {
+                                        __typename: "ProfileFollowModuleSettings";
+                                      }
+                                    | {
+                                        __typename: "RevertFollowModuleSettings";
+                                      }
+                                    | {
+                                        __typename: "UnknownFollowModuleSettings";
+                                      }
+                                    | null;
+                                } | null;
+                              } | null;
+                              collectModule:
+                                | {
+                                    __typename?: "FeeCollectModuleSettings";
+                                    type: CollectModules;
+                                    referralFee: number;
+                                    contractAddress: any;
+                                    followerOnly: boolean;
+                                    amount: {
+                                      __typename?: "ModuleFeeAmount";
+                                      value: string;
+                                      asset: {
+                                        __typename?: "Erc20";
+                                        symbol: string;
+                                        decimals: number;
+                                        address: any;
+                                      };
+                                    };
+                                  }
+                                | {
+                                    __typename?: "FreeCollectModuleSettings";
+                                    type: CollectModules;
+                                    contractAddress: any;
+                                    followerOnly: boolean;
+                                  }
+                                | {
+                                    __typename?: "LimitedFeeCollectModuleSettings";
+                                    type: CollectModules;
+                                    collectLimit: string;
+                                    referralFee: number;
+                                    contractAddress: any;
+                                    followerOnly: boolean;
+                                    amount: {
+                                      __typename?: "ModuleFeeAmount";
+                                      value: string;
+                                      asset: {
+                                        __typename?: "Erc20";
+                                        symbol: string;
+                                        decimals: number;
+                                        address: any;
+                                      };
+                                    };
+                                  }
+                                | {
+                                    __typename?: "LimitedTimedFeeCollectModuleSettings";
+                                    type: CollectModules;
+                                    collectLimit: string;
+                                    endTimestamp: any;
+                                    referralFee: number;
+                                    contractAddress: any;
+                                    followerOnly: boolean;
+                                    amount: {
+                                      __typename?: "ModuleFeeAmount";
+                                      value: string;
+                                      asset: {
+                                        __typename?: "Erc20";
+                                        symbol: string;
+                                        decimals: number;
+                                        address: any;
+                                      };
+                                    };
+                                  }
+                                | { __typename?: "RevertCollectModuleSettings" }
+                                | {
+                                    __typename?: "TimedFeeCollectModuleSettings";
+                                    type: CollectModules;
+                                    endTimestamp: any;
+                                    referralFee: number;
+                                    contractAddress: any;
+                                    followerOnly: boolean;
+                                    amount: {
+                                      __typename?: "ModuleFeeAmount";
+                                      value: string;
+                                      asset: {
+                                        __typename?: "Erc20";
+                                        symbol: string;
+                                        decimals: number;
+                                        address: any;
+                                      };
+                                    };
+                                  }
+                                | {
+                                    __typename?: "UnknownCollectModuleSettings";
+                                  };
+                              stats: {
+                                __typename?: "PublicationStats";
+                                totalUpvotes: number;
+                                totalAmountOfMirrors: number;
+                                totalAmountOfCollects: number;
+                                totalAmountOfComments: number;
+                              };
+                              metadata: {
+                                __typename?: "MetadataOutput";
+                                name?: string | null;
+                                description?: any | null;
+                                content?: any | null;
+                                image?: any | null;
+                                attributes: Array<{
+                                  __typename?: "MetadataAttributeOutput";
+                                  traitType?: string | null;
+                                  value?: string | null;
+                                }>;
+                                cover?: {
+                                  __typename?: "MediaSet";
+                                  original: { __typename?: "Media"; url: any };
+                                } | null;
+                                media: Array<{
+                                  __typename?: "MediaSet";
+                                  original: {
+                                    __typename?: "Media";
+                                    url: any;
+                                    mimeType?: any | null;
+                                  };
+                                }>;
+                                encryptionParams?: {
+                                  __typename?: "EncryptionParamsOutput";
+                                  accessCondition: {
+                                    __typename?: "AccessConditionOutput";
+                                    or?: {
+                                      __typename?: "OrConditionOutput";
+                                      criteria: Array<{
+                                        __typename?: "AccessConditionOutput";
+                                        and?: {
+                                          __typename?: "AndConditionOutput";
+                                          criteria: Array<{
+                                            __typename?: "AccessConditionOutput";
+                                            nft?: {
+                                              __typename?: "NftOwnershipOutput";
+                                              contractAddress: any;
+                                              chainID: any;
+                                              contractType: ContractType;
+                                              tokenIds?: Array<any> | null;
+                                            } | null;
+                                            eoa?: {
+                                              __typename?: "EoaOwnershipOutput";
+                                              address: any;
+                                            } | null;
+                                            token?: {
+                                              __typename?: "Erc20OwnershipOutput";
+                                              contractAddress: any;
+                                              amount: string;
+                                              chainID: any;
+                                              condition: ScalarOperator;
+                                              decimals: number;
+                                            } | null;
+                                            follow?: {
+                                              __typename?: "FollowConditionOutput";
+                                              profileId: any;
+                                            } | null;
+                                            collect?: {
+                                              __typename?: "CollectConditionOutput";
+                                              publicationId?: any | null;
+                                              thisPublication?: boolean | null;
+                                            } | null;
+                                          }>;
+                                        } | null;
+                                        or?: {
+                                          __typename?: "OrConditionOutput";
+                                          criteria: Array<{
+                                            __typename?: "AccessConditionOutput";
+                                            nft?: {
+                                              __typename?: "NftOwnershipOutput";
+                                              contractAddress: any;
+                                              chainID: any;
+                                              contractType: ContractType;
+                                              tokenIds?: Array<any> | null;
+                                            } | null;
+                                            eoa?: {
+                                              __typename?: "EoaOwnershipOutput";
+                                              address: any;
+                                            } | null;
+                                            token?: {
+                                              __typename?: "Erc20OwnershipOutput";
+                                              contractAddress: any;
+                                              amount: string;
+                                              chainID: any;
+                                              condition: ScalarOperator;
+                                              decimals: number;
+                                            } | null;
+                                            follow?: {
+                                              __typename?: "FollowConditionOutput";
+                                              profileId: any;
+                                            } | null;
+                                            collect?: {
+                                              __typename?: "CollectConditionOutput";
+                                              publicationId?: any | null;
+                                              thisPublication?: boolean | null;
+                                            } | null;
+                                          }>;
+                                        } | null;
+                                        nft?: {
+                                          __typename?: "NftOwnershipOutput";
+                                          contractAddress: any;
+                                          chainID: any;
+                                          contractType: ContractType;
+                                          tokenIds?: Array<any> | null;
+                                        } | null;
+                                        eoa?: {
+                                          __typename?: "EoaOwnershipOutput";
+                                          address: any;
+                                        } | null;
+                                        token?: {
+                                          __typename?: "Erc20OwnershipOutput";
+                                          contractAddress: any;
+                                          amount: string;
+                                          chainID: any;
+                                          condition: ScalarOperator;
+                                          decimals: number;
+                                        } | null;
+                                        follow?: {
+                                          __typename?: "FollowConditionOutput";
+                                          profileId: any;
+                                        } | null;
+                                        collect?: {
+                                          __typename?: "CollectConditionOutput";
+                                          publicationId?: any | null;
+                                          thisPublication?: boolean | null;
+                                        } | null;
+                                      }>;
+                                    } | null;
+                                  };
+                                } | null;
+                              };
+                            };
+                      }
+                    | {
+                        __typename?: "Post";
+                        id: any;
+                        reaction?: ReactionTypes | null;
+                        mirrors: Array<any>;
+                        hasCollectedByMe: boolean;
+                        onChainContentURI: string;
+                        hidden: boolean;
+                        createdAt: any;
+                        appId?: any | null;
+                        profile: {
+                          __typename?: "Profile";
+                          id: any;
+                          name?: string | null;
+                          handle: any;
+                          bio?: string | null;
+                          ownedBy: any;
+                          isFollowedByMe: boolean;
+                          stats: {
+                            __typename?: "ProfileStats";
+                            totalFollowers: number;
+                            totalFollowing: number;
+                          };
+                          attributes?: Array<{
+                            __typename?: "Attribute";
+                            key: string;
+                            value: string;
+                          }> | null;
+                          picture?:
+                            | {
+                                __typename?: "MediaSet";
+                                original: { __typename?: "Media"; url: any };
+                              }
+                            | { __typename?: "NftImage"; uri: any }
+                            | null;
+                          followModule?:
+                            | { __typename: "FeeFollowModuleSettings" }
+                            | { __typename: "ProfileFollowModuleSettings" }
+                            | { __typename: "RevertFollowModuleSettings" }
+                            | { __typename: "UnknownFollowModuleSettings" }
+                            | null;
+                        };
+                        canComment: {
+                          __typename?: "CanCommentResponse";
+                          result: boolean;
+                        };
+                        canMirror: {
+                          __typename?: "CanMirrorResponse";
+                          result: boolean;
+                        };
+                        canDecrypt: {
+                          __typename?: "CanDecryptResponse";
+                          result: boolean;
+                          reasons?: Array<DecryptFailReason> | null;
+                        };
+                        collectedBy?: {
+                          __typename?: "Wallet";
+                          address: any;
+                          defaultProfile?: {
+                            __typename?: "Profile";
+                            id: any;
+                            name?: string | null;
+                            handle: any;
+                            bio?: string | null;
+                            ownedBy: any;
+                            isFollowedByMe: boolean;
+                            stats: {
+                              __typename?: "ProfileStats";
+                              totalFollowers: number;
+                              totalFollowing: number;
+                            };
+                            attributes?: Array<{
+                              __typename?: "Attribute";
+                              key: string;
+                              value: string;
+                            }> | null;
+                            picture?:
+                              | {
+                                  __typename?: "MediaSet";
+                                  original: { __typename?: "Media"; url: any };
+                                }
+                              | { __typename?: "NftImage"; uri: any }
+                              | null;
+                            followModule?:
+                              | { __typename: "FeeFollowModuleSettings" }
+                              | { __typename: "ProfileFollowModuleSettings" }
+                              | { __typename: "RevertFollowModuleSettings" }
+                              | { __typename: "UnknownFollowModuleSettings" }
+                              | null;
+                          } | null;
+                        } | null;
+                        collectModule:
+                          | {
+                              __typename?: "FeeCollectModuleSettings";
+                              type: CollectModules;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | {
+                              __typename?: "FreeCollectModuleSettings";
+                              type: CollectModules;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                            }
+                          | {
+                              __typename?: "LimitedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              collectLimit: string;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | {
+                              __typename?: "LimitedTimedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              collectLimit: string;
+                              endTimestamp: any;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | { __typename?: "RevertCollectModuleSettings" }
+                          | {
+                              __typename?: "TimedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              endTimestamp: any;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | { __typename?: "UnknownCollectModuleSettings" };
+                        stats: {
+                          __typename?: "PublicationStats";
+                          totalUpvotes: number;
+                          totalAmountOfMirrors: number;
+                          totalAmountOfCollects: number;
+                          totalAmountOfComments: number;
+                        };
+                        metadata: {
+                          __typename?: "MetadataOutput";
+                          name?: string | null;
+                          description?: any | null;
+                          content?: any | null;
+                          image?: any | null;
+                          attributes: Array<{
+                            __typename?: "MetadataAttributeOutput";
+                            traitType?: string | null;
+                            value?: string | null;
+                          }>;
+                          cover?: {
+                            __typename?: "MediaSet";
+                            original: { __typename?: "Media"; url: any };
+                          } | null;
+                          media: Array<{
+                            __typename?: "MediaSet";
+                            original: {
+                              __typename?: "Media";
+                              url: any;
+                              mimeType?: any | null;
+                            };
+                          }>;
+                          encryptionParams?: {
+                            __typename?: "EncryptionParamsOutput";
+                            accessCondition: {
+                              __typename?: "AccessConditionOutput";
+                              or?: {
+                                __typename?: "OrConditionOutput";
+                                criteria: Array<{
+                                  __typename?: "AccessConditionOutput";
+                                  and?: {
+                                    __typename?: "AndConditionOutput";
+                                    criteria: Array<{
+                                      __typename?: "AccessConditionOutput";
+                                      nft?: {
+                                        __typename?: "NftOwnershipOutput";
+                                        contractAddress: any;
+                                        chainID: any;
+                                        contractType: ContractType;
+                                        tokenIds?: Array<any> | null;
+                                      } | null;
+                                      eoa?: {
+                                        __typename?: "EoaOwnershipOutput";
+                                        address: any;
+                                      } | null;
+                                      token?: {
+                                        __typename?: "Erc20OwnershipOutput";
+                                        contractAddress: any;
+                                        amount: string;
+                                        chainID: any;
+                                        condition: ScalarOperator;
+                                        decimals: number;
+                                      } | null;
+                                      follow?: {
+                                        __typename?: "FollowConditionOutput";
+                                        profileId: any;
+                                      } | null;
+                                      collect?: {
+                                        __typename?: "CollectConditionOutput";
+                                        publicationId?: any | null;
+                                        thisPublication?: boolean | null;
+                                      } | null;
+                                    }>;
+                                  } | null;
+                                  or?: {
+                                    __typename?: "OrConditionOutput";
+                                    criteria: Array<{
+                                      __typename?: "AccessConditionOutput";
+                                      nft?: {
+                                        __typename?: "NftOwnershipOutput";
+                                        contractAddress: any;
+                                        chainID: any;
+                                        contractType: ContractType;
+                                        tokenIds?: Array<any> | null;
+                                      } | null;
+                                      eoa?: {
+                                        __typename?: "EoaOwnershipOutput";
+                                        address: any;
+                                      } | null;
+                                      token?: {
+                                        __typename?: "Erc20OwnershipOutput";
+                                        contractAddress: any;
+                                        amount: string;
+                                        chainID: any;
+                                        condition: ScalarOperator;
+                                        decimals: number;
+                                      } | null;
+                                      follow?: {
+                                        __typename?: "FollowConditionOutput";
+                                        profileId: any;
+                                      } | null;
+                                      collect?: {
+                                        __typename?: "CollectConditionOutput";
+                                        publicationId?: any | null;
+                                        thisPublication?: boolean | null;
+                                      } | null;
+                                    }>;
+                                  } | null;
+                                  nft?: {
+                                    __typename?: "NftOwnershipOutput";
+                                    contractAddress: any;
+                                    chainID: any;
+                                    contractType: ContractType;
+                                    tokenIds?: Array<any> | null;
+                                  } | null;
+                                  eoa?: {
+                                    __typename?: "EoaOwnershipOutput";
+                                    address: any;
+                                  } | null;
+                                  token?: {
+                                    __typename?: "Erc20OwnershipOutput";
+                                    contractAddress: any;
+                                    amount: string;
+                                    chainID: any;
+                                    condition: ScalarOperator;
+                                    decimals: number;
+                                  } | null;
+                                  follow?: {
+                                    __typename?: "FollowConditionOutput";
+                                    profileId: any;
+                                  } | null;
+                                  collect?: {
+                                    __typename?: "CollectConditionOutput";
+                                    publicationId?: any | null;
+                                    thisPublication?: boolean | null;
+                                  } | null;
+                                }>;
+                              } | null;
+                            };
+                          } | null;
+                        };
+                      };
+                }
+              | {
+                  __typename?: "Mirror";
+                  id: any;
+                  reaction?: ReactionTypes | null;
+                  hidden: boolean;
+                  createdAt: any;
+                  appId?: any | null;
+                  profile: {
+                    __typename?: "Profile";
+                    id: any;
+                    name?: string | null;
+                    handle: any;
+                    bio?: string | null;
+                    ownedBy: any;
+                    isFollowedByMe: boolean;
+                    stats: {
+                      __typename?: "ProfileStats";
+                      totalFollowers: number;
+                      totalFollowing: number;
+                    };
+                    attributes?: Array<{
+                      __typename?: "Attribute";
+                      key: string;
+                      value: string;
+                    }> | null;
+                    picture?:
+                      | {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        }
+                      | { __typename?: "NftImage"; uri: any }
+                      | null;
+                    followModule?:
+                      | { __typename: "FeeFollowModuleSettings" }
+                      | { __typename: "ProfileFollowModuleSettings" }
+                      | { __typename: "RevertFollowModuleSettings" }
+                      | { __typename: "UnknownFollowModuleSettings" }
+                      | null;
+                  };
+                  canComment: {
+                    __typename?: "CanCommentResponse";
+                    result: boolean;
+                  };
+                  canMirror: {
+                    __typename?: "CanMirrorResponse";
+                    result: boolean;
+                  };
+                  canDecrypt: {
+                    __typename?: "CanDecryptResponse";
+                    result: boolean;
+                    reasons?: Array<DecryptFailReason> | null;
+                  };
+                  collectModule:
+                    | {
+                        __typename?: "FeeCollectModuleSettings";
+                        type: CollectModules;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | {
+                        __typename?: "FreeCollectModuleSettings";
+                        type: CollectModules;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                      }
+                    | {
+                        __typename?: "LimitedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        collectLimit: string;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | {
+                        __typename?: "LimitedTimedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        collectLimit: string;
+                        endTimestamp: any;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | { __typename?: "RevertCollectModuleSettings" }
+                    | {
+                        __typename?: "TimedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        endTimestamp: any;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | { __typename?: "UnknownCollectModuleSettings" };
+                  stats: {
+                    __typename?: "PublicationStats";
+                    totalUpvotes: number;
+                    totalAmountOfMirrors: number;
+                    totalAmountOfCollects: number;
+                    totalAmountOfComments: number;
+                  };
+                  metadata: {
+                    __typename?: "MetadataOutput";
+                    name?: string | null;
+                    description?: any | null;
+                    content?: any | null;
+                    image?: any | null;
+                    attributes: Array<{
+                      __typename?: "MetadataAttributeOutput";
+                      traitType?: string | null;
+                      value?: string | null;
+                    }>;
+                    cover?: {
+                      __typename?: "MediaSet";
+                      original: { __typename?: "Media"; url: any };
+                    } | null;
+                    media: Array<{
+                      __typename?: "MediaSet";
+                      original: {
+                        __typename?: "Media";
+                        url: any;
+                        mimeType?: any | null;
+                      };
+                    }>;
+                    encryptionParams?: {
+                      __typename?: "EncryptionParamsOutput";
+                      accessCondition: {
+                        __typename?: "AccessConditionOutput";
+                        or?: {
+                          __typename?: "OrConditionOutput";
+                          criteria: Array<{
+                            __typename?: "AccessConditionOutput";
+                            and?: {
+                              __typename?: "AndConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                            or?: {
+                              __typename?: "OrConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                            nft?: {
+                              __typename?: "NftOwnershipOutput";
+                              contractAddress: any;
+                              chainID: any;
+                              contractType: ContractType;
+                              tokenIds?: Array<any> | null;
+                            } | null;
+                            eoa?: {
+                              __typename?: "EoaOwnershipOutput";
+                              address: any;
+                            } | null;
+                            token?: {
+                              __typename?: "Erc20OwnershipOutput";
+                              contractAddress: any;
+                              amount: string;
+                              chainID: any;
+                              condition: ScalarOperator;
+                              decimals: number;
+                            } | null;
+                            follow?: {
+                              __typename?: "FollowConditionOutput";
+                              profileId: any;
+                            } | null;
+                            collect?: {
+                              __typename?: "CollectConditionOutput";
+                              publicationId?: any | null;
+                              thisPublication?: boolean | null;
+                            } | null;
+                          }>;
+                        } | null;
+                      };
+                    } | null;
+                  };
+                  mirrorOf:
+                    | {
+                        __typename?: "Comment";
+                        id: any;
+                        reaction?: ReactionTypes | null;
+                        mirrors: Array<any>;
+                        onChainContentURI: string;
+                        createdAt: any;
+                        profile: {
+                          __typename?: "Profile";
+                          id: any;
+                          name?: string | null;
+                          handle: any;
+                          bio?: string | null;
+                          ownedBy: any;
+                          isFollowedByMe: boolean;
+                          stats: {
+                            __typename?: "ProfileStats";
+                            totalFollowers: number;
+                            totalFollowing: number;
+                          };
+                          attributes?: Array<{
+                            __typename?: "Attribute";
+                            key: string;
+                            value: string;
+                          }> | null;
+                          picture?:
+                            | {
+                                __typename?: "MediaSet";
+                                original: { __typename?: "Media"; url: any };
+                              }
+                            | { __typename?: "NftImage"; uri: any }
+                            | null;
+                          followModule?:
+                            | { __typename: "FeeFollowModuleSettings" }
+                            | { __typename: "ProfileFollowModuleSettings" }
+                            | { __typename: "RevertFollowModuleSettings" }
+                            | { __typename: "UnknownFollowModuleSettings" }
+                            | null;
+                        };
+                        canComment: {
+                          __typename?: "CanCommentResponse";
+                          result: boolean;
+                        };
+                        canMirror: {
+                          __typename?: "CanMirrorResponse";
+                          result: boolean;
+                        };
+                        canDecrypt: {
+                          __typename?: "CanDecryptResponse";
+                          result: boolean;
+                          reasons?: Array<DecryptFailReason> | null;
+                        };
+                        stats: {
+                          __typename?: "PublicationStats";
+                          totalUpvotes: number;
+                          totalAmountOfMirrors: number;
+                          totalAmountOfCollects: number;
+                          totalAmountOfComments: number;
+                        };
+                      }
+                    | {
+                        __typename?: "Post";
+                        id: any;
+                        reaction?: ReactionTypes | null;
+                        mirrors: Array<any>;
+                        hasCollectedByMe: boolean;
+                        onChainContentURI: string;
+                        hidden: boolean;
+                        createdAt: any;
+                        appId?: any | null;
+                        profile: {
+                          __typename?: "Profile";
+                          id: any;
+                          name?: string | null;
+                          handle: any;
+                          bio?: string | null;
+                          ownedBy: any;
+                          isFollowedByMe: boolean;
+                          stats: {
+                            __typename?: "ProfileStats";
+                            totalFollowers: number;
+                            totalFollowing: number;
+                          };
+                          attributes?: Array<{
+                            __typename?: "Attribute";
+                            key: string;
+                            value: string;
+                          }> | null;
+                          picture?:
+                            | {
+                                __typename?: "MediaSet";
+                                original: { __typename?: "Media"; url: any };
+                              }
+                            | { __typename?: "NftImage"; uri: any }
+                            | null;
+                          followModule?:
+                            | { __typename: "FeeFollowModuleSettings" }
+                            | { __typename: "ProfileFollowModuleSettings" }
+                            | { __typename: "RevertFollowModuleSettings" }
+                            | { __typename: "UnknownFollowModuleSettings" }
+                            | null;
+                        };
+                        canComment: {
+                          __typename?: "CanCommentResponse";
+                          result: boolean;
+                        };
+                        canMirror: {
+                          __typename?: "CanMirrorResponse";
+                          result: boolean;
+                        };
+                        canDecrypt: {
+                          __typename?: "CanDecryptResponse";
+                          result: boolean;
+                          reasons?: Array<DecryptFailReason> | null;
+                        };
+                        collectedBy?: {
+                          __typename?: "Wallet";
+                          address: any;
+                          defaultProfile?: {
+                            __typename?: "Profile";
+                            id: any;
+                            name?: string | null;
+                            handle: any;
+                            bio?: string | null;
+                            ownedBy: any;
+                            isFollowedByMe: boolean;
+                            stats: {
+                              __typename?: "ProfileStats";
+                              totalFollowers: number;
+                              totalFollowing: number;
+                            };
+                            attributes?: Array<{
+                              __typename?: "Attribute";
+                              key: string;
+                              value: string;
+                            }> | null;
+                            picture?:
+                              | {
+                                  __typename?: "MediaSet";
+                                  original: { __typename?: "Media"; url: any };
+                                }
+                              | { __typename?: "NftImage"; uri: any }
+                              | null;
+                            followModule?:
+                              | { __typename: "FeeFollowModuleSettings" }
+                              | { __typename: "ProfileFollowModuleSettings" }
+                              | { __typename: "RevertFollowModuleSettings" }
+                              | { __typename: "UnknownFollowModuleSettings" }
+                              | null;
+                          } | null;
+                        } | null;
+                        collectModule:
+                          | {
+                              __typename?: "FeeCollectModuleSettings";
+                              type: CollectModules;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | {
+                              __typename?: "FreeCollectModuleSettings";
+                              type: CollectModules;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                            }
+                          | {
+                              __typename?: "LimitedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              collectLimit: string;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | {
+                              __typename?: "LimitedTimedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              collectLimit: string;
+                              endTimestamp: any;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | { __typename?: "RevertCollectModuleSettings" }
+                          | {
+                              __typename?: "TimedFeeCollectModuleSettings";
+                              type: CollectModules;
+                              endTimestamp: any;
+                              referralFee: number;
+                              contractAddress: any;
+                              followerOnly: boolean;
+                              amount: {
+                                __typename?: "ModuleFeeAmount";
+                                value: string;
+                                asset: {
+                                  __typename?: "Erc20";
+                                  symbol: string;
+                                  decimals: number;
+                                  address: any;
+                                };
+                              };
+                            }
+                          | { __typename?: "UnknownCollectModuleSettings" };
+                        stats: {
+                          __typename?: "PublicationStats";
+                          totalUpvotes: number;
+                          totalAmountOfMirrors: number;
+                          totalAmountOfCollects: number;
+                          totalAmountOfComments: number;
+                        };
+                        metadata: {
+                          __typename?: "MetadataOutput";
+                          name?: string | null;
+                          description?: any | null;
+                          content?: any | null;
+                          image?: any | null;
+                          attributes: Array<{
+                            __typename?: "MetadataAttributeOutput";
+                            traitType?: string | null;
+                            value?: string | null;
+                          }>;
+                          cover?: {
+                            __typename?: "MediaSet";
+                            original: { __typename?: "Media"; url: any };
+                          } | null;
+                          media: Array<{
+                            __typename?: "MediaSet";
+                            original: {
+                              __typename?: "Media";
+                              url: any;
+                              mimeType?: any | null;
+                            };
+                          }>;
+                          encryptionParams?: {
+                            __typename?: "EncryptionParamsOutput";
+                            accessCondition: {
+                              __typename?: "AccessConditionOutput";
+                              or?: {
+                                __typename?: "OrConditionOutput";
+                                criteria: Array<{
+                                  __typename?: "AccessConditionOutput";
+                                  and?: {
+                                    __typename?: "AndConditionOutput";
+                                    criteria: Array<{
+                                      __typename?: "AccessConditionOutput";
+                                      nft?: {
+                                        __typename?: "NftOwnershipOutput";
+                                        contractAddress: any;
+                                        chainID: any;
+                                        contractType: ContractType;
+                                        tokenIds?: Array<any> | null;
+                                      } | null;
+                                      eoa?: {
+                                        __typename?: "EoaOwnershipOutput";
+                                        address: any;
+                                      } | null;
+                                      token?: {
+                                        __typename?: "Erc20OwnershipOutput";
+                                        contractAddress: any;
+                                        amount: string;
+                                        chainID: any;
+                                        condition: ScalarOperator;
+                                        decimals: number;
+                                      } | null;
+                                      follow?: {
+                                        __typename?: "FollowConditionOutput";
+                                        profileId: any;
+                                      } | null;
+                                      collect?: {
+                                        __typename?: "CollectConditionOutput";
+                                        publicationId?: any | null;
+                                        thisPublication?: boolean | null;
+                                      } | null;
+                                    }>;
+                                  } | null;
+                                  or?: {
+                                    __typename?: "OrConditionOutput";
+                                    criteria: Array<{
+                                      __typename?: "AccessConditionOutput";
+                                      nft?: {
+                                        __typename?: "NftOwnershipOutput";
+                                        contractAddress: any;
+                                        chainID: any;
+                                        contractType: ContractType;
+                                        tokenIds?: Array<any> | null;
+                                      } | null;
+                                      eoa?: {
+                                        __typename?: "EoaOwnershipOutput";
+                                        address: any;
+                                      } | null;
+                                      token?: {
+                                        __typename?: "Erc20OwnershipOutput";
+                                        contractAddress: any;
+                                        amount: string;
+                                        chainID: any;
+                                        condition: ScalarOperator;
+                                        decimals: number;
+                                      } | null;
+                                      follow?: {
+                                        __typename?: "FollowConditionOutput";
+                                        profileId: any;
+                                      } | null;
+                                      collect?: {
+                                        __typename?: "CollectConditionOutput";
+                                        publicationId?: any | null;
+                                        thisPublication?: boolean | null;
+                                      } | null;
+                                    }>;
+                                  } | null;
+                                  nft?: {
+                                    __typename?: "NftOwnershipOutput";
+                                    contractAddress: any;
+                                    chainID: any;
+                                    contractType: ContractType;
+                                    tokenIds?: Array<any> | null;
+                                  } | null;
+                                  eoa?: {
+                                    __typename?: "EoaOwnershipOutput";
+                                    address: any;
+                                  } | null;
+                                  token?: {
+                                    __typename?: "Erc20OwnershipOutput";
+                                    contractAddress: any;
+                                    amount: string;
+                                    chainID: any;
+                                    condition: ScalarOperator;
+                                    decimals: number;
+                                  } | null;
+                                  follow?: {
+                                    __typename?: "FollowConditionOutput";
+                                    profileId: any;
+                                  } | null;
+                                  collect?: {
+                                    __typename?: "CollectConditionOutput";
+                                    publicationId?: any | null;
+                                    thisPublication?: boolean | null;
+                                  } | null;
+                                }>;
+                              } | null;
+                            };
+                          } | null;
+                        };
+                      };
+                }
+              | {
+                  __typename?: "Post";
+                  id: any;
+                  reaction?: ReactionTypes | null;
+                  mirrors: Array<any>;
+                  hasCollectedByMe: boolean;
+                  onChainContentURI: string;
+                  hidden: boolean;
+                  createdAt: any;
+                  appId?: any | null;
+                  profile: {
+                    __typename?: "Profile";
+                    id: any;
+                    name?: string | null;
+                    handle: any;
+                    bio?: string | null;
+                    ownedBy: any;
+                    isFollowedByMe: boolean;
+                    stats: {
+                      __typename?: "ProfileStats";
+                      totalFollowers: number;
+                      totalFollowing: number;
+                    };
+                    attributes?: Array<{
+                      __typename?: "Attribute";
+                      key: string;
+                      value: string;
+                    }> | null;
+                    picture?:
+                      | {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        }
+                      | { __typename?: "NftImage"; uri: any }
+                      | null;
+                    followModule?:
+                      | { __typename: "FeeFollowModuleSettings" }
+                      | { __typename: "ProfileFollowModuleSettings" }
+                      | { __typename: "RevertFollowModuleSettings" }
+                      | { __typename: "UnknownFollowModuleSettings" }
+                      | null;
+                  };
+                  canComment: {
+                    __typename?: "CanCommentResponse";
+                    result: boolean;
+                  };
+                  canMirror: {
+                    __typename?: "CanMirrorResponse";
+                    result: boolean;
+                  };
+                  canDecrypt: {
+                    __typename?: "CanDecryptResponse";
+                    result: boolean;
+                    reasons?: Array<DecryptFailReason> | null;
+                  };
+                  collectedBy?: {
+                    __typename?: "Wallet";
+                    address: any;
+                    defaultProfile?: {
+                      __typename?: "Profile";
+                      id: any;
+                      name?: string | null;
+                      handle: any;
+                      bio?: string | null;
+                      ownedBy: any;
+                      isFollowedByMe: boolean;
+                      stats: {
+                        __typename?: "ProfileStats";
+                        totalFollowers: number;
+                        totalFollowing: number;
+                      };
+                      attributes?: Array<{
+                        __typename?: "Attribute";
+                        key: string;
+                        value: string;
+                      }> | null;
+                      picture?:
+                        | {
+                            __typename?: "MediaSet";
+                            original: { __typename?: "Media"; url: any };
+                          }
+                        | { __typename?: "NftImage"; uri: any }
+                        | null;
+                      followModule?:
+                        | { __typename: "FeeFollowModuleSettings" }
+                        | { __typename: "ProfileFollowModuleSettings" }
+                        | { __typename: "RevertFollowModuleSettings" }
+                        | { __typename: "UnknownFollowModuleSettings" }
+                        | null;
+                    } | null;
+                  } | null;
+                  collectModule:
+                    | {
+                        __typename?: "FeeCollectModuleSettings";
+                        type: CollectModules;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | {
+                        __typename?: "FreeCollectModuleSettings";
+                        type: CollectModules;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                      }
+                    | {
+                        __typename?: "LimitedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        collectLimit: string;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | {
+                        __typename?: "LimitedTimedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        collectLimit: string;
+                        endTimestamp: any;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | { __typename?: "RevertCollectModuleSettings" }
+                    | {
+                        __typename?: "TimedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        endTimestamp: any;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | { __typename?: "UnknownCollectModuleSettings" };
+                  stats: {
+                    __typename?: "PublicationStats";
+                    totalUpvotes: number;
+                    totalAmountOfMirrors: number;
+                    totalAmountOfCollects: number;
+                    totalAmountOfComments: number;
+                  };
+                  metadata: {
+                    __typename?: "MetadataOutput";
+                    name?: string | null;
+                    description?: any | null;
+                    content?: any | null;
+                    image?: any | null;
+                    attributes: Array<{
+                      __typename?: "MetadataAttributeOutput";
+                      traitType?: string | null;
+                      value?: string | null;
+                    }>;
+                    cover?: {
+                      __typename?: "MediaSet";
+                      original: { __typename?: "Media"; url: any };
+                    } | null;
+                    media: Array<{
+                      __typename?: "MediaSet";
+                      original: {
+                        __typename?: "Media";
+                        url: any;
+                        mimeType?: any | null;
+                      };
+                    }>;
+                    encryptionParams?: {
+                      __typename?: "EncryptionParamsOutput";
+                      accessCondition: {
+                        __typename?: "AccessConditionOutput";
+                        or?: {
+                          __typename?: "OrConditionOutput";
+                          criteria: Array<{
+                            __typename?: "AccessConditionOutput";
+                            and?: {
+                              __typename?: "AndConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                            or?: {
+                              __typename?: "OrConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                            nft?: {
+                              __typename?: "NftOwnershipOutput";
+                              contractAddress: any;
+                              chainID: any;
+                              contractType: ContractType;
+                              tokenIds?: Array<any> | null;
+                            } | null;
+                            eoa?: {
+                              __typename?: "EoaOwnershipOutput";
+                              address: any;
+                            } | null;
+                            token?: {
+                              __typename?: "Erc20OwnershipOutput";
+                              contractAddress: any;
+                              amount: string;
+                              chainID: any;
+                              condition: ScalarOperator;
+                              decimals: number;
+                            } | null;
+                            follow?: {
+                              __typename?: "FollowConditionOutput";
+                              profileId: any;
+                            } | null;
+                            collect?: {
+                              __typename?: "CollectConditionOutput";
+                              publicationId?: any | null;
+                              thisPublication?: boolean | null;
+                            } | null;
+                          }>;
+                        } | null;
+                      };
+                    } | null;
+                  };
+                }
+              | null;
+          }
+        | {
+            __typename: "Mirror";
+            id: any;
+            reaction?: ReactionTypes | null;
+            hidden: boolean;
+            createdAt: any;
+            appId?: any | null;
+            profile: {
+              __typename?: "Profile";
+              id: any;
+              name?: string | null;
+              handle: any;
+              bio?: string | null;
+              ownedBy: any;
+              isFollowedByMe: boolean;
+              stats: {
+                __typename?: "ProfileStats";
+                totalFollowers: number;
+                totalFollowing: number;
+              };
+              attributes?: Array<{
+                __typename?: "Attribute";
+                key: string;
+                value: string;
+              }> | null;
+              picture?:
+                | {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  }
+                | { __typename?: "NftImage"; uri: any }
+                | null;
+              followModule?:
+                | { __typename: "FeeFollowModuleSettings" }
+                | { __typename: "ProfileFollowModuleSettings" }
+                | { __typename: "RevertFollowModuleSettings" }
+                | { __typename: "UnknownFollowModuleSettings" }
+                | null;
+            };
+            canComment: { __typename?: "CanCommentResponse"; result: boolean };
+            canMirror: { __typename?: "CanMirrorResponse"; result: boolean };
+            canDecrypt: {
+              __typename?: "CanDecryptResponse";
+              result: boolean;
+              reasons?: Array<DecryptFailReason> | null;
+            };
+            collectModule:
+              | {
+                  __typename?: "FeeCollectModuleSettings";
+                  type: CollectModules;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | {
+                  __typename?: "FreeCollectModuleSettings";
+                  type: CollectModules;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                }
+              | {
+                  __typename?: "LimitedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  collectLimit: string;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | {
+                  __typename?: "LimitedTimedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  collectLimit: string;
+                  endTimestamp: any;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | { __typename?: "RevertCollectModuleSettings" }
+              | {
+                  __typename?: "TimedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  endTimestamp: any;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | { __typename?: "UnknownCollectModuleSettings" };
+            stats: {
+              __typename?: "PublicationStats";
+              totalUpvotes: number;
+              totalAmountOfMirrors: number;
+              totalAmountOfCollects: number;
+              totalAmountOfComments: number;
+            };
+            metadata: {
+              __typename?: "MetadataOutput";
+              name?: string | null;
+              description?: any | null;
+              content?: any | null;
+              image?: any | null;
+              attributes: Array<{
+                __typename?: "MetadataAttributeOutput";
+                traitType?: string | null;
+                value?: string | null;
+              }>;
+              cover?: {
+                __typename?: "MediaSet";
+                original: { __typename?: "Media"; url: any };
+              } | null;
+              media: Array<{
+                __typename?: "MediaSet";
+                original: {
+                  __typename?: "Media";
+                  url: any;
+                  mimeType?: any | null;
+                };
+              }>;
+              encryptionParams?: {
+                __typename?: "EncryptionParamsOutput";
+                accessCondition: {
+                  __typename?: "AccessConditionOutput";
+                  or?: {
+                    __typename?: "OrConditionOutput";
+                    criteria: Array<{
+                      __typename?: "AccessConditionOutput";
+                      and?: {
+                        __typename?: "AndConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                      or?: {
+                        __typename?: "OrConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                      nft?: {
+                        __typename?: "NftOwnershipOutput";
+                        contractAddress: any;
+                        chainID: any;
+                        contractType: ContractType;
+                        tokenIds?: Array<any> | null;
+                      } | null;
+                      eoa?: {
+                        __typename?: "EoaOwnershipOutput";
+                        address: any;
+                      } | null;
+                      token?: {
+                        __typename?: "Erc20OwnershipOutput";
+                        contractAddress: any;
+                        amount: string;
+                        chainID: any;
+                        condition: ScalarOperator;
+                        decimals: number;
+                      } | null;
+                      follow?: {
+                        __typename?: "FollowConditionOutput";
+                        profileId: any;
+                      } | null;
+                      collect?: {
+                        __typename?: "CollectConditionOutput";
+                        publicationId?: any | null;
+                        thisPublication?: boolean | null;
+                      } | null;
+                    }>;
+                  } | null;
+                };
+              } | null;
+            };
+            mirrorOf:
+              | {
+                  __typename?: "Comment";
+                  id: any;
+                  reaction?: ReactionTypes | null;
+                  mirrors: Array<any>;
+                  onChainContentURI: string;
+                  createdAt: any;
+                  profile: {
+                    __typename?: "Profile";
+                    id: any;
+                    name?: string | null;
+                    handle: any;
+                    bio?: string | null;
+                    ownedBy: any;
+                    isFollowedByMe: boolean;
+                    stats: {
+                      __typename?: "ProfileStats";
+                      totalFollowers: number;
+                      totalFollowing: number;
+                    };
+                    attributes?: Array<{
+                      __typename?: "Attribute";
+                      key: string;
+                      value: string;
+                    }> | null;
+                    picture?:
+                      | {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        }
+                      | { __typename?: "NftImage"; uri: any }
+                      | null;
+                    followModule?:
+                      | { __typename: "FeeFollowModuleSettings" }
+                      | { __typename: "ProfileFollowModuleSettings" }
+                      | { __typename: "RevertFollowModuleSettings" }
+                      | { __typename: "UnknownFollowModuleSettings" }
+                      | null;
+                  };
+                  canComment: {
+                    __typename?: "CanCommentResponse";
+                    result: boolean;
+                  };
+                  canMirror: {
+                    __typename?: "CanMirrorResponse";
+                    result: boolean;
+                  };
+                  canDecrypt: {
+                    __typename?: "CanDecryptResponse";
+                    result: boolean;
+                    reasons?: Array<DecryptFailReason> | null;
+                  };
+                  stats: {
+                    __typename?: "PublicationStats";
+                    totalUpvotes: number;
+                    totalAmountOfMirrors: number;
+                    totalAmountOfCollects: number;
+                    totalAmountOfComments: number;
+                  };
+                }
+              | {
+                  __typename?: "Post";
+                  id: any;
+                  reaction?: ReactionTypes | null;
+                  mirrors: Array<any>;
+                  hasCollectedByMe: boolean;
+                  onChainContentURI: string;
+                  hidden: boolean;
+                  createdAt: any;
+                  appId?: any | null;
+                  profile: {
+                    __typename?: "Profile";
+                    id: any;
+                    name?: string | null;
+                    handle: any;
+                    bio?: string | null;
+                    ownedBy: any;
+                    isFollowedByMe: boolean;
+                    stats: {
+                      __typename?: "ProfileStats";
+                      totalFollowers: number;
+                      totalFollowing: number;
+                    };
+                    attributes?: Array<{
+                      __typename?: "Attribute";
+                      key: string;
+                      value: string;
+                    }> | null;
+                    picture?:
+                      | {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        }
+                      | { __typename?: "NftImage"; uri: any }
+                      | null;
+                    followModule?:
+                      | { __typename: "FeeFollowModuleSettings" }
+                      | { __typename: "ProfileFollowModuleSettings" }
+                      | { __typename: "RevertFollowModuleSettings" }
+                      | { __typename: "UnknownFollowModuleSettings" }
+                      | null;
+                  };
+                  canComment: {
+                    __typename?: "CanCommentResponse";
+                    result: boolean;
+                  };
+                  canMirror: {
+                    __typename?: "CanMirrorResponse";
+                    result: boolean;
+                  };
+                  canDecrypt: {
+                    __typename?: "CanDecryptResponse";
+                    result: boolean;
+                    reasons?: Array<DecryptFailReason> | null;
+                  };
+                  collectedBy?: {
+                    __typename?: "Wallet";
+                    address: any;
+                    defaultProfile?: {
+                      __typename?: "Profile";
+                      id: any;
+                      name?: string | null;
+                      handle: any;
+                      bio?: string | null;
+                      ownedBy: any;
+                      isFollowedByMe: boolean;
+                      stats: {
+                        __typename?: "ProfileStats";
+                        totalFollowers: number;
+                        totalFollowing: number;
+                      };
+                      attributes?: Array<{
+                        __typename?: "Attribute";
+                        key: string;
+                        value: string;
+                      }> | null;
+                      picture?:
+                        | {
+                            __typename?: "MediaSet";
+                            original: { __typename?: "Media"; url: any };
+                          }
+                        | { __typename?: "NftImage"; uri: any }
+                        | null;
+                      followModule?:
+                        | { __typename: "FeeFollowModuleSettings" }
+                        | { __typename: "ProfileFollowModuleSettings" }
+                        | { __typename: "RevertFollowModuleSettings" }
+                        | { __typename: "UnknownFollowModuleSettings" }
+                        | null;
+                    } | null;
+                  } | null;
+                  collectModule:
+                    | {
+                        __typename?: "FeeCollectModuleSettings";
+                        type: CollectModules;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | {
+                        __typename?: "FreeCollectModuleSettings";
+                        type: CollectModules;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                      }
+                    | {
+                        __typename?: "LimitedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        collectLimit: string;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | {
+                        __typename?: "LimitedTimedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        collectLimit: string;
+                        endTimestamp: any;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | { __typename?: "RevertCollectModuleSettings" }
+                    | {
+                        __typename?: "TimedFeeCollectModuleSettings";
+                        type: CollectModules;
+                        endTimestamp: any;
+                        referralFee: number;
+                        contractAddress: any;
+                        followerOnly: boolean;
+                        amount: {
+                          __typename?: "ModuleFeeAmount";
+                          value: string;
+                          asset: {
+                            __typename?: "Erc20";
+                            symbol: string;
+                            decimals: number;
+                            address: any;
+                          };
+                        };
+                      }
+                    | { __typename?: "UnknownCollectModuleSettings" };
+                  stats: {
+                    __typename?: "PublicationStats";
+                    totalUpvotes: number;
+                    totalAmountOfMirrors: number;
+                    totalAmountOfCollects: number;
+                    totalAmountOfComments: number;
+                  };
+                  metadata: {
+                    __typename?: "MetadataOutput";
+                    name?: string | null;
+                    description?: any | null;
+                    content?: any | null;
+                    image?: any | null;
+                    attributes: Array<{
+                      __typename?: "MetadataAttributeOutput";
+                      traitType?: string | null;
+                      value?: string | null;
+                    }>;
+                    cover?: {
+                      __typename?: "MediaSet";
+                      original: { __typename?: "Media"; url: any };
+                    } | null;
+                    media: Array<{
+                      __typename?: "MediaSet";
+                      original: {
+                        __typename?: "Media";
+                        url: any;
+                        mimeType?: any | null;
+                      };
+                    }>;
+                    encryptionParams?: {
+                      __typename?: "EncryptionParamsOutput";
+                      accessCondition: {
+                        __typename?: "AccessConditionOutput";
+                        or?: {
+                          __typename?: "OrConditionOutput";
+                          criteria: Array<{
+                            __typename?: "AccessConditionOutput";
+                            and?: {
+                              __typename?: "AndConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                            or?: {
+                              __typename?: "OrConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                            nft?: {
+                              __typename?: "NftOwnershipOutput";
+                              contractAddress: any;
+                              chainID: any;
+                              contractType: ContractType;
+                              tokenIds?: Array<any> | null;
+                            } | null;
+                            eoa?: {
+                              __typename?: "EoaOwnershipOutput";
+                              address: any;
+                            } | null;
+                            token?: {
+                              __typename?: "Erc20OwnershipOutput";
+                              contractAddress: any;
+                              amount: string;
+                              chainID: any;
+                              condition: ScalarOperator;
+                              decimals: number;
+                            } | null;
+                            follow?: {
+                              __typename?: "FollowConditionOutput";
+                              profileId: any;
+                            } | null;
+                            collect?: {
+                              __typename?: "CollectConditionOutput";
+                              publicationId?: any | null;
+                              thisPublication?: boolean | null;
+                            } | null;
+                          }>;
+                        } | null;
+                      };
+                    } | null;
+                  };
+                };
+          }
+        | {
+            __typename: "Post";
+            id: any;
+            reaction?: ReactionTypes | null;
+            mirrors: Array<any>;
+            hasCollectedByMe: boolean;
+            onChainContentURI: string;
+            hidden: boolean;
+            createdAt: any;
+            appId?: any | null;
+            profile: {
+              __typename?: "Profile";
+              id: any;
+              name?: string | null;
+              handle: any;
+              bio?: string | null;
+              ownedBy: any;
+              isFollowedByMe: boolean;
+              stats: {
+                __typename?: "ProfileStats";
+                totalFollowers: number;
+                totalFollowing: number;
+              };
+              attributes?: Array<{
+                __typename?: "Attribute";
+                key: string;
+                value: string;
+              }> | null;
+              picture?:
+                | {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  }
+                | { __typename?: "NftImage"; uri: any }
+                | null;
+              followModule?:
+                | { __typename: "FeeFollowModuleSettings" }
+                | { __typename: "ProfileFollowModuleSettings" }
+                | { __typename: "RevertFollowModuleSettings" }
+                | { __typename: "UnknownFollowModuleSettings" }
+                | null;
+            };
+            canComment: { __typename?: "CanCommentResponse"; result: boolean };
+            canMirror: { __typename?: "CanMirrorResponse"; result: boolean };
+            canDecrypt: {
+              __typename?: "CanDecryptResponse";
+              result: boolean;
+              reasons?: Array<DecryptFailReason> | null;
+            };
+            collectedBy?: {
+              __typename?: "Wallet";
+              address: any;
+              defaultProfile?: {
+                __typename?: "Profile";
+                id: any;
+                name?: string | null;
+                handle: any;
+                bio?: string | null;
+                ownedBy: any;
+                isFollowedByMe: boolean;
+                stats: {
+                  __typename?: "ProfileStats";
+                  totalFollowers: number;
+                  totalFollowing: number;
+                };
+                attributes?: Array<{
+                  __typename?: "Attribute";
+                  key: string;
+                  value: string;
+                }> | null;
+                picture?:
+                  | {
+                      __typename?: "MediaSet";
+                      original: { __typename?: "Media"; url: any };
+                    }
+                  | { __typename?: "NftImage"; uri: any }
+                  | null;
+                followModule?:
+                  | { __typename: "FeeFollowModuleSettings" }
+                  | { __typename: "ProfileFollowModuleSettings" }
+                  | { __typename: "RevertFollowModuleSettings" }
+                  | { __typename: "UnknownFollowModuleSettings" }
+                  | null;
+              } | null;
+            } | null;
+            collectModule:
+              | {
+                  __typename?: "FeeCollectModuleSettings";
+                  type: CollectModules;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | {
+                  __typename?: "FreeCollectModuleSettings";
+                  type: CollectModules;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                }
+              | {
+                  __typename?: "LimitedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  collectLimit: string;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | {
+                  __typename?: "LimitedTimedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  collectLimit: string;
+                  endTimestamp: any;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | { __typename?: "RevertCollectModuleSettings" }
+              | {
+                  __typename?: "TimedFeeCollectModuleSettings";
+                  type: CollectModules;
+                  endTimestamp: any;
+                  referralFee: number;
+                  contractAddress: any;
+                  followerOnly: boolean;
+                  amount: {
+                    __typename?: "ModuleFeeAmount";
+                    value: string;
+                    asset: {
+                      __typename?: "Erc20";
+                      symbol: string;
+                      decimals: number;
+                      address: any;
+                    };
+                  };
+                }
+              | { __typename?: "UnknownCollectModuleSettings" };
+            stats: {
+              __typename?: "PublicationStats";
+              totalUpvotes: number;
+              totalAmountOfMirrors: number;
+              totalAmountOfCollects: number;
+              totalAmountOfComments: number;
+            };
+            metadata: {
+              __typename?: "MetadataOutput";
+              name?: string | null;
+              description?: any | null;
+              content?: any | null;
+              image?: any | null;
+              attributes: Array<{
+                __typename?: "MetadataAttributeOutput";
+                traitType?: string | null;
+                value?: string | null;
+              }>;
+              cover?: {
+                __typename?: "MediaSet";
+                original: { __typename?: "Media"; url: any };
+              } | null;
+              media: Array<{
+                __typename?: "MediaSet";
+                original: {
+                  __typename?: "Media";
+                  url: any;
+                  mimeType?: any | null;
+                };
+              }>;
+              encryptionParams?: {
+                __typename?: "EncryptionParamsOutput";
+                accessCondition: {
+                  __typename?: "AccessConditionOutput";
+                  or?: {
+                    __typename?: "OrConditionOutput";
+                    criteria: Array<{
+                      __typename?: "AccessConditionOutput";
+                      and?: {
+                        __typename?: "AndConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                      or?: {
+                        __typename?: "OrConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                      nft?: {
+                        __typename?: "NftOwnershipOutput";
+                        contractAddress: any;
+                        chainID: any;
+                        contractType: ContractType;
+                        tokenIds?: Array<any> | null;
+                      } | null;
+                      eoa?: {
+                        __typename?: "EoaOwnershipOutput";
+                        address: any;
+                      } | null;
+                      token?: {
+                        __typename?: "Erc20OwnershipOutput";
+                        contractAddress: any;
+                        amount: string;
+                        chainID: any;
+                        condition: ScalarOperator;
+                        decimals: number;
+                      } | null;
+                      follow?: {
+                        __typename?: "FollowConditionOutput";
+                        profileId: any;
+                      } | null;
+                      collect?: {
+                        __typename?: "CollectConditionOutput";
+                        publicationId?: any | null;
+                        thisPublication?: boolean | null;
+                      } | null;
+                    }>;
+                  } | null;
+                };
+              } | null;
+            };
+          };
+      revenue: {
+        __typename?: "RevenueAggregate";
+        total: {
+          __typename?: "Erc20Amount";
+          value: string;
+          asset: {
+            __typename?: "Erc20";
+            name: string;
+            symbol: string;
+            decimals: number;
+            address: any;
+          };
+        };
+      };
+    }>;
+    pageInfo: {
+      __typename?: "PaginatedResultInfo";
+      prev?: any | null;
+      next?: any | null;
+      totalCount?: number | null;
+    };
+  };
+};
+
+export type ProfilePublicationsQueryVariables = Exact<{
+  request: PublicationsQueryRequest;
+  reactionRequest?: InputMaybe<ReactionFieldResolverRequest>;
+  profileId?: InputMaybe<Scalars["ProfileId"]>;
+}>;
+
+export type ProfilePublicationsQuery = {
+  __typename?: "Query";
+  publications: {
+    __typename?: "PaginatedPublicationResult";
+    items: Array<
+      | {
+          __typename: "Comment";
+          id: any;
+          reaction?: ReactionTypes | null;
+          mirrors: Array<any>;
+          hasCollectedByMe: boolean;
+          onChainContentURI: string;
+          hidden: boolean;
+          createdAt: any;
+          appId?: any | null;
+          profile: {
+            __typename?: "Profile";
+            id: any;
+            name?: string | null;
+            handle: any;
+            bio?: string | null;
+            ownedBy: any;
+            isFollowedByMe: boolean;
+            stats: {
+              __typename?: "ProfileStats";
+              totalFollowers: number;
+              totalFollowing: number;
+            };
+            attributes?: Array<{
+              __typename?: "Attribute";
+              key: string;
+              value: string;
+            }> | null;
+            picture?:
+              | {
+                  __typename?: "MediaSet";
+                  original: { __typename?: "Media"; url: any };
+                }
+              | { __typename?: "NftImage"; uri: any }
+              | null;
+            followModule?:
+              | { __typename: "FeeFollowModuleSettings" }
+              | { __typename: "ProfileFollowModuleSettings" }
+              | { __typename: "RevertFollowModuleSettings" }
+              | { __typename: "UnknownFollowModuleSettings" }
+              | null;
+          };
+          canComment: { __typename?: "CanCommentResponse"; result: boolean };
+          canMirror: { __typename?: "CanMirrorResponse"; result: boolean };
+          canDecrypt: {
+            __typename?: "CanDecryptResponse";
+            result: boolean;
+            reasons?: Array<DecryptFailReason> | null;
+          };
+          collectedBy?: {
+            __typename?: "Wallet";
+            address: any;
+            defaultProfile?: {
+              __typename?: "Profile";
+              id: any;
+              name?: string | null;
+              handle: any;
+              bio?: string | null;
+              ownedBy: any;
+              isFollowedByMe: boolean;
+              stats: {
+                __typename?: "ProfileStats";
+                totalFollowers: number;
+                totalFollowing: number;
+              };
+              attributes?: Array<{
+                __typename?: "Attribute";
+                key: string;
+                value: string;
+              }> | null;
+              picture?:
+                | {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  }
+                | { __typename?: "NftImage"; uri: any }
+                | null;
+              followModule?:
+                | { __typename: "FeeFollowModuleSettings" }
+                | { __typename: "ProfileFollowModuleSettings" }
+                | { __typename: "RevertFollowModuleSettings" }
+                | { __typename: "UnknownFollowModuleSettings" }
+                | null;
+            } | null;
+          } | null;
+          collectModule:
+            | {
+                __typename?: "FeeCollectModuleSettings";
+                type: CollectModules;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | {
+                __typename?: "FreeCollectModuleSettings";
+                type: CollectModules;
+                contractAddress: any;
+                followerOnly: boolean;
+              }
+            | {
+                __typename?: "LimitedFeeCollectModuleSettings";
+                type: CollectModules;
+                collectLimit: string;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | {
+                __typename?: "LimitedTimedFeeCollectModuleSettings";
+                type: CollectModules;
+                collectLimit: string;
+                endTimestamp: any;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | { __typename?: "RevertCollectModuleSettings" }
+            | {
+                __typename?: "TimedFeeCollectModuleSettings";
+                type: CollectModules;
+                endTimestamp: any;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | { __typename?: "UnknownCollectModuleSettings" };
+          stats: {
+            __typename?: "PublicationStats";
+            totalUpvotes: number;
+            totalAmountOfMirrors: number;
+            totalAmountOfCollects: number;
+            totalAmountOfComments: number;
+          };
+          metadata: {
+            __typename?: "MetadataOutput";
+            name?: string | null;
+            description?: any | null;
+            content?: any | null;
+            image?: any | null;
+            attributes: Array<{
+              __typename?: "MetadataAttributeOutput";
+              traitType?: string | null;
+              value?: string | null;
+            }>;
+            cover?: {
+              __typename?: "MediaSet";
+              original: { __typename?: "Media"; url: any };
+            } | null;
+            media: Array<{
+              __typename?: "MediaSet";
+              original: {
+                __typename?: "Media";
+                url: any;
+                mimeType?: any | null;
+              };
+            }>;
+            encryptionParams?: {
+              __typename?: "EncryptionParamsOutput";
+              accessCondition: {
+                __typename?: "AccessConditionOutput";
+                or?: {
+                  __typename?: "OrConditionOutput";
+                  criteria: Array<{
+                    __typename?: "AccessConditionOutput";
+                    and?: {
+                      __typename?: "AndConditionOutput";
+                      criteria: Array<{
+                        __typename?: "AccessConditionOutput";
+                        nft?: {
+                          __typename?: "NftOwnershipOutput";
+                          contractAddress: any;
+                          chainID: any;
+                          contractType: ContractType;
+                          tokenIds?: Array<any> | null;
+                        } | null;
+                        eoa?: {
+                          __typename?: "EoaOwnershipOutput";
+                          address: any;
+                        } | null;
+                        token?: {
+                          __typename?: "Erc20OwnershipOutput";
+                          contractAddress: any;
+                          amount: string;
+                          chainID: any;
+                          condition: ScalarOperator;
+                          decimals: number;
+                        } | null;
+                        follow?: {
+                          __typename?: "FollowConditionOutput";
+                          profileId: any;
+                        } | null;
+                        collect?: {
+                          __typename?: "CollectConditionOutput";
+                          publicationId?: any | null;
+                          thisPublication?: boolean | null;
+                        } | null;
+                      }>;
+                    } | null;
+                    or?: {
+                      __typename?: "OrConditionOutput";
+                      criteria: Array<{
+                        __typename?: "AccessConditionOutput";
+                        nft?: {
+                          __typename?: "NftOwnershipOutput";
+                          contractAddress: any;
+                          chainID: any;
+                          contractType: ContractType;
+                          tokenIds?: Array<any> | null;
+                        } | null;
+                        eoa?: {
+                          __typename?: "EoaOwnershipOutput";
+                          address: any;
+                        } | null;
+                        token?: {
+                          __typename?: "Erc20OwnershipOutput";
+                          contractAddress: any;
+                          amount: string;
+                          chainID: any;
+                          condition: ScalarOperator;
+                          decimals: number;
+                        } | null;
+                        follow?: {
+                          __typename?: "FollowConditionOutput";
+                          profileId: any;
+                        } | null;
+                        collect?: {
+                          __typename?: "CollectConditionOutput";
+                          publicationId?: any | null;
+                          thisPublication?: boolean | null;
+                        } | null;
+                      }>;
+                    } | null;
+                    nft?: {
+                      __typename?: "NftOwnershipOutput";
+                      contractAddress: any;
+                      chainID: any;
+                      contractType: ContractType;
+                      tokenIds?: Array<any> | null;
+                    } | null;
+                    eoa?: {
+                      __typename?: "EoaOwnershipOutput";
+                      address: any;
+                    } | null;
+                    token?: {
+                      __typename?: "Erc20OwnershipOutput";
+                      contractAddress: any;
+                      amount: string;
+                      chainID: any;
+                      condition: ScalarOperator;
+                      decimals: number;
+                    } | null;
+                    follow?: {
+                      __typename?: "FollowConditionOutput";
+                      profileId: any;
+                    } | null;
+                    collect?: {
+                      __typename?: "CollectConditionOutput";
+                      publicationId?: any | null;
+                      thisPublication?: boolean | null;
+                    } | null;
+                  }>;
+                } | null;
+              };
+            } | null;
+          };
+          commentOn?:
+            | {
+                __typename?: "Comment";
+                id: any;
+                reaction?: ReactionTypes | null;
+                mirrors: Array<any>;
+                hasCollectedByMe: boolean;
+                onChainContentURI: string;
+                hidden: boolean;
+                createdAt: any;
+                profile: {
+                  __typename?: "Profile";
+                  id: any;
+                  name?: string | null;
+                  handle: any;
+                  bio?: string | null;
+                  ownedBy: any;
+                  isFollowedByMe: boolean;
+                  stats: {
+                    __typename?: "ProfileStats";
+                    totalFollowers: number;
+                    totalFollowing: number;
+                  };
+                  attributes?: Array<{
+                    __typename?: "Attribute";
+                    key: string;
+                    value: string;
+                  }> | null;
+                  picture?:
+                    | {
+                        __typename?: "MediaSet";
+                        original: { __typename?: "Media"; url: any };
+                      }
+                    | { __typename?: "NftImage"; uri: any }
+                    | null;
+                  followModule?:
+                    | { __typename: "FeeFollowModuleSettings" }
+                    | { __typename: "ProfileFollowModuleSettings" }
+                    | { __typename: "RevertFollowModuleSettings" }
+                    | { __typename: "UnknownFollowModuleSettings" }
+                    | null;
+                };
+                canComment: {
+                  __typename?: "CanCommentResponse";
+                  result: boolean;
+                };
+                canMirror: {
+                  __typename?: "CanMirrorResponse";
+                  result: boolean;
+                };
+                canDecrypt: {
+                  __typename?: "CanDecryptResponse";
+                  result: boolean;
+                  reasons?: Array<DecryptFailReason> | null;
+                };
+                collectedBy?: {
+                  __typename?: "Wallet";
+                  address: any;
+                  defaultProfile?: {
+                    __typename?: "Profile";
+                    handle: any;
+                  } | null;
+                } | null;
+                collectModule:
+                  | {
+                      __typename?: "FeeCollectModuleSettings";
+                      type: CollectModules;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | {
+                      __typename?: "FreeCollectModuleSettings";
+                      type: CollectModules;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                    }
+                  | {
+                      __typename?: "LimitedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      collectLimit: string;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | {
+                      __typename?: "LimitedTimedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      collectLimit: string;
+                      endTimestamp: any;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | { __typename?: "RevertCollectModuleSettings" }
+                  | {
+                      __typename?: "TimedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      endTimestamp: any;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | { __typename?: "UnknownCollectModuleSettings" };
+                metadata: {
+                  __typename?: "MetadataOutput";
+                  name?: string | null;
+                  description?: any | null;
+                  content?: any | null;
+                  image?: any | null;
+                  attributes: Array<{
+                    __typename?: "MetadataAttributeOutput";
+                    traitType?: string | null;
+                    value?: string | null;
+                  }>;
+                  cover?: {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  } | null;
+                  media: Array<{
+                    __typename?: "MediaSet";
+                    original: {
+                      __typename?: "Media";
+                      url: any;
+                      mimeType?: any | null;
+                    };
+                  }>;
+                  encryptionParams?: {
+                    __typename?: "EncryptionParamsOutput";
+                    accessCondition: {
+                      __typename?: "AccessConditionOutput";
+                      or?: {
+                        __typename?: "OrConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          and?: {
+                            __typename?: "AndConditionOutput";
+                            criteria: Array<{
+                              __typename?: "AccessConditionOutput";
+                              nft?: {
+                                __typename?: "NftOwnershipOutput";
+                                contractAddress: any;
+                                chainID: any;
+                                contractType: ContractType;
+                                tokenIds?: Array<any> | null;
+                              } | null;
+                              eoa?: {
+                                __typename?: "EoaOwnershipOutput";
+                                address: any;
+                              } | null;
+                              token?: {
+                                __typename?: "Erc20OwnershipOutput";
+                                contractAddress: any;
+                                amount: string;
+                                chainID: any;
+                                condition: ScalarOperator;
+                                decimals: number;
+                              } | null;
+                              follow?: {
+                                __typename?: "FollowConditionOutput";
+                                profileId: any;
+                              } | null;
+                              collect?: {
+                                __typename?: "CollectConditionOutput";
+                                publicationId?: any | null;
+                                thisPublication?: boolean | null;
+                              } | null;
+                            }>;
+                          } | null;
+                          or?: {
+                            __typename?: "OrConditionOutput";
+                            criteria: Array<{
+                              __typename?: "AccessConditionOutput";
+                              nft?: {
+                                __typename?: "NftOwnershipOutput";
+                                contractAddress: any;
+                                chainID: any;
+                                contractType: ContractType;
+                                tokenIds?: Array<any> | null;
+                              } | null;
+                              eoa?: {
+                                __typename?: "EoaOwnershipOutput";
+                                address: any;
+                              } | null;
+                              token?: {
+                                __typename?: "Erc20OwnershipOutput";
+                                contractAddress: any;
+                                amount: string;
+                                chainID: any;
+                                condition: ScalarOperator;
+                                decimals: number;
+                              } | null;
+                              follow?: {
+                                __typename?: "FollowConditionOutput";
+                                profileId: any;
+                              } | null;
+                              collect?: {
+                                __typename?: "CollectConditionOutput";
+                                publicationId?: any | null;
+                                thisPublication?: boolean | null;
+                              } | null;
+                            }>;
+                          } | null;
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                    };
+                  } | null;
+                };
+                stats: {
+                  __typename?: "PublicationStats";
+                  totalUpvotes: number;
+                  totalAmountOfMirrors: number;
+                  totalAmountOfCollects: number;
+                  totalAmountOfComments: number;
+                };
+                mainPost:
+                  | {
+                      __typename?: "Mirror";
+                      id: any;
+                      reaction?: ReactionTypes | null;
+                      hidden: boolean;
+                      createdAt: any;
+                      appId?: any | null;
+                      profile: {
+                        __typename?: "Profile";
+                        id: any;
+                        name?: string | null;
+                        handle: any;
+                        bio?: string | null;
+                        ownedBy: any;
+                        isFollowedByMe: boolean;
+                        stats: {
+                          __typename?: "ProfileStats";
+                          totalFollowers: number;
+                          totalFollowing: number;
+                        };
+                        attributes?: Array<{
+                          __typename?: "Attribute";
+                          key: string;
+                          value: string;
+                        }> | null;
+                        picture?:
+                          | {
+                              __typename?: "MediaSet";
+                              original: { __typename?: "Media"; url: any };
+                            }
+                          | { __typename?: "NftImage"; uri: any }
+                          | null;
+                        followModule?:
+                          | { __typename: "FeeFollowModuleSettings" }
+                          | { __typename: "ProfileFollowModuleSettings" }
+                          | { __typename: "RevertFollowModuleSettings" }
+                          | { __typename: "UnknownFollowModuleSettings" }
+                          | null;
+                      };
+                      canComment: {
+                        __typename?: "CanCommentResponse";
+                        result: boolean;
+                      };
+                      canMirror: {
+                        __typename?: "CanMirrorResponse";
+                        result: boolean;
+                      };
+                      canDecrypt: {
+                        __typename?: "CanDecryptResponse";
+                        result: boolean;
+                        reasons?: Array<DecryptFailReason> | null;
+                      };
+                      collectModule:
+                        | {
+                            __typename?: "FeeCollectModuleSettings";
+                            type: CollectModules;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | {
+                            __typename?: "FreeCollectModuleSettings";
+                            type: CollectModules;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                          }
+                        | {
+                            __typename?: "LimitedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            collectLimit: string;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | {
+                            __typename?: "LimitedTimedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            collectLimit: string;
+                            endTimestamp: any;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | { __typename?: "RevertCollectModuleSettings" }
+                        | {
+                            __typename?: "TimedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            endTimestamp: any;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | { __typename?: "UnknownCollectModuleSettings" };
+                      stats: {
+                        __typename?: "PublicationStats";
+                        totalUpvotes: number;
+                        totalAmountOfMirrors: number;
+                        totalAmountOfCollects: number;
+                        totalAmountOfComments: number;
+                      };
+                      metadata: {
+                        __typename?: "MetadataOutput";
+                        name?: string | null;
+                        description?: any | null;
+                        content?: any | null;
+                        image?: any | null;
+                        attributes: Array<{
+                          __typename?: "MetadataAttributeOutput";
+                          traitType?: string | null;
+                          value?: string | null;
+                        }>;
+                        cover?: {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        } | null;
+                        media: Array<{
+                          __typename?: "MediaSet";
+                          original: {
+                            __typename?: "Media";
+                            url: any;
+                            mimeType?: any | null;
+                          };
+                        }>;
+                        encryptionParams?: {
+                          __typename?: "EncryptionParamsOutput";
+                          accessCondition: {
+                            __typename?: "AccessConditionOutput";
+                            or?: {
+                              __typename?: "OrConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                and?: {
+                                  __typename?: "AndConditionOutput";
+                                  criteria: Array<{
+                                    __typename?: "AccessConditionOutput";
+                                    nft?: {
+                                      __typename?: "NftOwnershipOutput";
+                                      contractAddress: any;
+                                      chainID: any;
+                                      contractType: ContractType;
+                                      tokenIds?: Array<any> | null;
+                                    } | null;
+                                    eoa?: {
+                                      __typename?: "EoaOwnershipOutput";
+                                      address: any;
+                                    } | null;
+                                    token?: {
+                                      __typename?: "Erc20OwnershipOutput";
+                                      contractAddress: any;
+                                      amount: string;
+                                      chainID: any;
+                                      condition: ScalarOperator;
+                                      decimals: number;
+                                    } | null;
+                                    follow?: {
+                                      __typename?: "FollowConditionOutput";
+                                      profileId: any;
+                                    } | null;
+                                    collect?: {
+                                      __typename?: "CollectConditionOutput";
+                                      publicationId?: any | null;
+                                      thisPublication?: boolean | null;
+                                    } | null;
+                                  }>;
+                                } | null;
+                                or?: {
+                                  __typename?: "OrConditionOutput";
+                                  criteria: Array<{
+                                    __typename?: "AccessConditionOutput";
+                                    nft?: {
+                                      __typename?: "NftOwnershipOutput";
+                                      contractAddress: any;
+                                      chainID: any;
+                                      contractType: ContractType;
+                                      tokenIds?: Array<any> | null;
+                                    } | null;
+                                    eoa?: {
+                                      __typename?: "EoaOwnershipOutput";
+                                      address: any;
+                                    } | null;
+                                    token?: {
+                                      __typename?: "Erc20OwnershipOutput";
+                                      contractAddress: any;
+                                      amount: string;
+                                      chainID: any;
+                                      condition: ScalarOperator;
+                                      decimals: number;
+                                    } | null;
+                                    follow?: {
+                                      __typename?: "FollowConditionOutput";
+                                      profileId: any;
+                                    } | null;
+                                    collect?: {
+                                      __typename?: "CollectConditionOutput";
+                                      publicationId?: any | null;
+                                      thisPublication?: boolean | null;
+                                    } | null;
+                                  }>;
+                                } | null;
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                          };
+                        } | null;
+                      };
+                      mirrorOf:
+                        | {
+                            __typename?: "Comment";
+                            id: any;
+                            reaction?: ReactionTypes | null;
+                            mirrors: Array<any>;
+                            onChainContentURI: string;
+                            createdAt: any;
+                            profile: {
+                              __typename?: "Profile";
+                              id: any;
+                              name?: string | null;
+                              handle: any;
+                              bio?: string | null;
+                              ownedBy: any;
+                              isFollowedByMe: boolean;
+                              stats: {
+                                __typename?: "ProfileStats";
+                                totalFollowers: number;
+                                totalFollowing: number;
+                              };
+                              attributes?: Array<{
+                                __typename?: "Attribute";
+                                key: string;
+                                value: string;
+                              }> | null;
+                              picture?:
+                                | {
+                                    __typename?: "MediaSet";
+                                    original: {
+                                      __typename?: "Media";
+                                      url: any;
+                                    };
+                                  }
+                                | { __typename?: "NftImage"; uri: any }
+                                | null;
+                              followModule?:
+                                | { __typename: "FeeFollowModuleSettings" }
+                                | { __typename: "ProfileFollowModuleSettings" }
+                                | { __typename: "RevertFollowModuleSettings" }
+                                | { __typename: "UnknownFollowModuleSettings" }
+                                | null;
+                            };
+                            canComment: {
+                              __typename?: "CanCommentResponse";
+                              result: boolean;
+                            };
+                            canMirror: {
+                              __typename?: "CanMirrorResponse";
+                              result: boolean;
+                            };
+                            canDecrypt: {
+                              __typename?: "CanDecryptResponse";
+                              result: boolean;
+                              reasons?: Array<DecryptFailReason> | null;
+                            };
+                            stats: {
+                              __typename?: "PublicationStats";
+                              totalUpvotes: number;
+                              totalAmountOfMirrors: number;
+                              totalAmountOfCollects: number;
+                              totalAmountOfComments: number;
+                            };
+                          }
+                        | {
+                            __typename?: "Post";
+                            id: any;
+                            reaction?: ReactionTypes | null;
+                            mirrors: Array<any>;
+                            hasCollectedByMe: boolean;
+                            onChainContentURI: string;
+                            hidden: boolean;
+                            createdAt: any;
+                            appId?: any | null;
+                            profile: {
+                              __typename?: "Profile";
+                              id: any;
+                              name?: string | null;
+                              handle: any;
+                              bio?: string | null;
+                              ownedBy: any;
+                              isFollowedByMe: boolean;
+                              stats: {
+                                __typename?: "ProfileStats";
+                                totalFollowers: number;
+                                totalFollowing: number;
+                              };
+                              attributes?: Array<{
+                                __typename?: "Attribute";
+                                key: string;
+                                value: string;
+                              }> | null;
+                              picture?:
+                                | {
+                                    __typename?: "MediaSet";
+                                    original: {
+                                      __typename?: "Media";
+                                      url: any;
+                                    };
+                                  }
+                                | { __typename?: "NftImage"; uri: any }
+                                | null;
+                              followModule?:
+                                | { __typename: "FeeFollowModuleSettings" }
+                                | { __typename: "ProfileFollowModuleSettings" }
+                                | { __typename: "RevertFollowModuleSettings" }
+                                | { __typename: "UnknownFollowModuleSettings" }
+                                | null;
+                            };
+                            canComment: {
+                              __typename?: "CanCommentResponse";
+                              result: boolean;
+                            };
+                            canMirror: {
+                              __typename?: "CanMirrorResponse";
+                              result: boolean;
+                            };
+                            canDecrypt: {
+                              __typename?: "CanDecryptResponse";
+                              result: boolean;
+                              reasons?: Array<DecryptFailReason> | null;
+                            };
+                            collectedBy?: {
+                              __typename?: "Wallet";
+                              address: any;
+                              defaultProfile?: {
+                                __typename?: "Profile";
+                                id: any;
+                                name?: string | null;
+                                handle: any;
+                                bio?: string | null;
+                                ownedBy: any;
+                                isFollowedByMe: boolean;
+                                stats: {
+                                  __typename?: "ProfileStats";
+                                  totalFollowers: number;
+                                  totalFollowing: number;
+                                };
+                                attributes?: Array<{
+                                  __typename?: "Attribute";
+                                  key: string;
+                                  value: string;
+                                }> | null;
+                                picture?:
+                                  | {
+                                      __typename?: "MediaSet";
+                                      original: {
+                                        __typename?: "Media";
+                                        url: any;
+                                      };
+                                    }
+                                  | { __typename?: "NftImage"; uri: any }
+                                  | null;
+                                followModule?:
+                                  | { __typename: "FeeFollowModuleSettings" }
+                                  | {
+                                      __typename: "ProfileFollowModuleSettings";
+                                    }
+                                  | { __typename: "RevertFollowModuleSettings" }
+                                  | {
+                                      __typename: "UnknownFollowModuleSettings";
+                                    }
+                                  | null;
+                              } | null;
+                            } | null;
+                            collectModule:
+                              | {
+                                  __typename?: "FeeCollectModuleSettings";
+                                  type: CollectModules;
+                                  referralFee: number;
+                                  contractAddress: any;
+                                  followerOnly: boolean;
+                                  amount: {
+                                    __typename?: "ModuleFeeAmount";
+                                    value: string;
+                                    asset: {
+                                      __typename?: "Erc20";
+                                      symbol: string;
+                                      decimals: number;
+                                      address: any;
+                                    };
+                                  };
+                                }
+                              | {
+                                  __typename?: "FreeCollectModuleSettings";
+                                  type: CollectModules;
+                                  contractAddress: any;
+                                  followerOnly: boolean;
+                                }
+                              | {
+                                  __typename?: "LimitedFeeCollectModuleSettings";
+                                  type: CollectModules;
+                                  collectLimit: string;
+                                  referralFee: number;
+                                  contractAddress: any;
+                                  followerOnly: boolean;
+                                  amount: {
+                                    __typename?: "ModuleFeeAmount";
+                                    value: string;
+                                    asset: {
+                                      __typename?: "Erc20";
+                                      symbol: string;
+                                      decimals: number;
+                                      address: any;
+                                    };
+                                  };
+                                }
+                              | {
+                                  __typename?: "LimitedTimedFeeCollectModuleSettings";
+                                  type: CollectModules;
+                                  collectLimit: string;
+                                  endTimestamp: any;
+                                  referralFee: number;
+                                  contractAddress: any;
+                                  followerOnly: boolean;
+                                  amount: {
+                                    __typename?: "ModuleFeeAmount";
+                                    value: string;
+                                    asset: {
+                                      __typename?: "Erc20";
+                                      symbol: string;
+                                      decimals: number;
+                                      address: any;
+                                    };
+                                  };
+                                }
+                              | { __typename?: "RevertCollectModuleSettings" }
+                              | {
+                                  __typename?: "TimedFeeCollectModuleSettings";
+                                  type: CollectModules;
+                                  endTimestamp: any;
+                                  referralFee: number;
+                                  contractAddress: any;
+                                  followerOnly: boolean;
+                                  amount: {
+                                    __typename?: "ModuleFeeAmount";
+                                    value: string;
+                                    asset: {
+                                      __typename?: "Erc20";
+                                      symbol: string;
+                                      decimals: number;
+                                      address: any;
+                                    };
+                                  };
+                                }
+                              | { __typename?: "UnknownCollectModuleSettings" };
+                            stats: {
+                              __typename?: "PublicationStats";
+                              totalUpvotes: number;
+                              totalAmountOfMirrors: number;
+                              totalAmountOfCollects: number;
+                              totalAmountOfComments: number;
+                            };
+                            metadata: {
+                              __typename?: "MetadataOutput";
+                              name?: string | null;
+                              description?: any | null;
+                              content?: any | null;
+                              image?: any | null;
+                              attributes: Array<{
+                                __typename?: "MetadataAttributeOutput";
+                                traitType?: string | null;
+                                value?: string | null;
+                              }>;
+                              cover?: {
+                                __typename?: "MediaSet";
+                                original: { __typename?: "Media"; url: any };
+                              } | null;
+                              media: Array<{
+                                __typename?: "MediaSet";
+                                original: {
+                                  __typename?: "Media";
+                                  url: any;
+                                  mimeType?: any | null;
+                                };
+                              }>;
+                              encryptionParams?: {
+                                __typename?: "EncryptionParamsOutput";
+                                accessCondition: {
+                                  __typename?: "AccessConditionOutput";
+                                  or?: {
+                                    __typename?: "OrConditionOutput";
+                                    criteria: Array<{
+                                      __typename?: "AccessConditionOutput";
+                                      and?: {
+                                        __typename?: "AndConditionOutput";
+                                        criteria: Array<{
+                                          __typename?: "AccessConditionOutput";
+                                          nft?: {
+                                            __typename?: "NftOwnershipOutput";
+                                            contractAddress: any;
+                                            chainID: any;
+                                            contractType: ContractType;
+                                            tokenIds?: Array<any> | null;
+                                          } | null;
+                                          eoa?: {
+                                            __typename?: "EoaOwnershipOutput";
+                                            address: any;
+                                          } | null;
+                                          token?: {
+                                            __typename?: "Erc20OwnershipOutput";
+                                            contractAddress: any;
+                                            amount: string;
+                                            chainID: any;
+                                            condition: ScalarOperator;
+                                            decimals: number;
+                                          } | null;
+                                          follow?: {
+                                            __typename?: "FollowConditionOutput";
+                                            profileId: any;
+                                          } | null;
+                                          collect?: {
+                                            __typename?: "CollectConditionOutput";
+                                            publicationId?: any | null;
+                                            thisPublication?: boolean | null;
+                                          } | null;
+                                        }>;
+                                      } | null;
+                                      or?: {
+                                        __typename?: "OrConditionOutput";
+                                        criteria: Array<{
+                                          __typename?: "AccessConditionOutput";
+                                          nft?: {
+                                            __typename?: "NftOwnershipOutput";
+                                            contractAddress: any;
+                                            chainID: any;
+                                            contractType: ContractType;
+                                            tokenIds?: Array<any> | null;
+                                          } | null;
+                                          eoa?: {
+                                            __typename?: "EoaOwnershipOutput";
+                                            address: any;
+                                          } | null;
+                                          token?: {
+                                            __typename?: "Erc20OwnershipOutput";
+                                            contractAddress: any;
+                                            amount: string;
+                                            chainID: any;
+                                            condition: ScalarOperator;
+                                            decimals: number;
+                                          } | null;
+                                          follow?: {
+                                            __typename?: "FollowConditionOutput";
+                                            profileId: any;
+                                          } | null;
+                                          collect?: {
+                                            __typename?: "CollectConditionOutput";
+                                            publicationId?: any | null;
+                                            thisPublication?: boolean | null;
+                                          } | null;
+                                        }>;
+                                      } | null;
+                                      nft?: {
+                                        __typename?: "NftOwnershipOutput";
+                                        contractAddress: any;
+                                        chainID: any;
+                                        contractType: ContractType;
+                                        tokenIds?: Array<any> | null;
+                                      } | null;
+                                      eoa?: {
+                                        __typename?: "EoaOwnershipOutput";
+                                        address: any;
+                                      } | null;
+                                      token?: {
+                                        __typename?: "Erc20OwnershipOutput";
+                                        contractAddress: any;
+                                        amount: string;
+                                        chainID: any;
+                                        condition: ScalarOperator;
+                                        decimals: number;
+                                      } | null;
+                                      follow?: {
+                                        __typename?: "FollowConditionOutput";
+                                        profileId: any;
+                                      } | null;
+                                      collect?: {
+                                        __typename?: "CollectConditionOutput";
+                                        publicationId?: any | null;
+                                        thisPublication?: boolean | null;
+                                      } | null;
+                                    }>;
+                                  } | null;
+                                };
+                              } | null;
+                            };
+                          };
+                    }
+                  | {
+                      __typename?: "Post";
+                      id: any;
+                      reaction?: ReactionTypes | null;
+                      mirrors: Array<any>;
+                      hasCollectedByMe: boolean;
+                      onChainContentURI: string;
+                      hidden: boolean;
+                      createdAt: any;
+                      appId?: any | null;
+                      profile: {
+                        __typename?: "Profile";
+                        id: any;
+                        name?: string | null;
+                        handle: any;
+                        bio?: string | null;
+                        ownedBy: any;
+                        isFollowedByMe: boolean;
+                        stats: {
+                          __typename?: "ProfileStats";
+                          totalFollowers: number;
+                          totalFollowing: number;
+                        };
+                        attributes?: Array<{
+                          __typename?: "Attribute";
+                          key: string;
+                          value: string;
+                        }> | null;
+                        picture?:
+                          | {
+                              __typename?: "MediaSet";
+                              original: { __typename?: "Media"; url: any };
+                            }
+                          | { __typename?: "NftImage"; uri: any }
+                          | null;
+                        followModule?:
+                          | { __typename: "FeeFollowModuleSettings" }
+                          | { __typename: "ProfileFollowModuleSettings" }
+                          | { __typename: "RevertFollowModuleSettings" }
+                          | { __typename: "UnknownFollowModuleSettings" }
+                          | null;
+                      };
+                      canComment: {
+                        __typename?: "CanCommentResponse";
+                        result: boolean;
+                      };
+                      canMirror: {
+                        __typename?: "CanMirrorResponse";
+                        result: boolean;
+                      };
+                      canDecrypt: {
+                        __typename?: "CanDecryptResponse";
+                        result: boolean;
+                        reasons?: Array<DecryptFailReason> | null;
+                      };
+                      collectedBy?: {
+                        __typename?: "Wallet";
+                        address: any;
+                        defaultProfile?: {
+                          __typename?: "Profile";
+                          id: any;
+                          name?: string | null;
+                          handle: any;
+                          bio?: string | null;
+                          ownedBy: any;
+                          isFollowedByMe: boolean;
+                          stats: {
+                            __typename?: "ProfileStats";
+                            totalFollowers: number;
+                            totalFollowing: number;
+                          };
+                          attributes?: Array<{
+                            __typename?: "Attribute";
+                            key: string;
+                            value: string;
+                          }> | null;
+                          picture?:
+                            | {
+                                __typename?: "MediaSet";
+                                original: { __typename?: "Media"; url: any };
+                              }
+                            | { __typename?: "NftImage"; uri: any }
+                            | null;
+                          followModule?:
+                            | { __typename: "FeeFollowModuleSettings" }
+                            | { __typename: "ProfileFollowModuleSettings" }
+                            | { __typename: "RevertFollowModuleSettings" }
+                            | { __typename: "UnknownFollowModuleSettings" }
+                            | null;
+                        } | null;
+                      } | null;
+                      collectModule:
+                        | {
+                            __typename?: "FeeCollectModuleSettings";
+                            type: CollectModules;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | {
+                            __typename?: "FreeCollectModuleSettings";
+                            type: CollectModules;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                          }
+                        | {
+                            __typename?: "LimitedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            collectLimit: string;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | {
+                            __typename?: "LimitedTimedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            collectLimit: string;
+                            endTimestamp: any;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | { __typename?: "RevertCollectModuleSettings" }
+                        | {
+                            __typename?: "TimedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            endTimestamp: any;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | { __typename?: "UnknownCollectModuleSettings" };
+                      stats: {
+                        __typename?: "PublicationStats";
+                        totalUpvotes: number;
+                        totalAmountOfMirrors: number;
+                        totalAmountOfCollects: number;
+                        totalAmountOfComments: number;
+                      };
+                      metadata: {
+                        __typename?: "MetadataOutput";
+                        name?: string | null;
+                        description?: any | null;
+                        content?: any | null;
+                        image?: any | null;
+                        attributes: Array<{
+                          __typename?: "MetadataAttributeOutput";
+                          traitType?: string | null;
+                          value?: string | null;
+                        }>;
+                        cover?: {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        } | null;
+                        media: Array<{
+                          __typename?: "MediaSet";
+                          original: {
+                            __typename?: "Media";
+                            url: any;
+                            mimeType?: any | null;
+                          };
+                        }>;
+                        encryptionParams?: {
+                          __typename?: "EncryptionParamsOutput";
+                          accessCondition: {
+                            __typename?: "AccessConditionOutput";
+                            or?: {
+                              __typename?: "OrConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                and?: {
+                                  __typename?: "AndConditionOutput";
+                                  criteria: Array<{
+                                    __typename?: "AccessConditionOutput";
+                                    nft?: {
+                                      __typename?: "NftOwnershipOutput";
+                                      contractAddress: any;
+                                      chainID: any;
+                                      contractType: ContractType;
+                                      tokenIds?: Array<any> | null;
+                                    } | null;
+                                    eoa?: {
+                                      __typename?: "EoaOwnershipOutput";
+                                      address: any;
+                                    } | null;
+                                    token?: {
+                                      __typename?: "Erc20OwnershipOutput";
+                                      contractAddress: any;
+                                      amount: string;
+                                      chainID: any;
+                                      condition: ScalarOperator;
+                                      decimals: number;
+                                    } | null;
+                                    follow?: {
+                                      __typename?: "FollowConditionOutput";
+                                      profileId: any;
+                                    } | null;
+                                    collect?: {
+                                      __typename?: "CollectConditionOutput";
+                                      publicationId?: any | null;
+                                      thisPublication?: boolean | null;
+                                    } | null;
+                                  }>;
+                                } | null;
+                                or?: {
+                                  __typename?: "OrConditionOutput";
+                                  criteria: Array<{
+                                    __typename?: "AccessConditionOutput";
+                                    nft?: {
+                                      __typename?: "NftOwnershipOutput";
+                                      contractAddress: any;
+                                      chainID: any;
+                                      contractType: ContractType;
+                                      tokenIds?: Array<any> | null;
+                                    } | null;
+                                    eoa?: {
+                                      __typename?: "EoaOwnershipOutput";
+                                      address: any;
+                                    } | null;
+                                    token?: {
+                                      __typename?: "Erc20OwnershipOutput";
+                                      contractAddress: any;
+                                      amount: string;
+                                      chainID: any;
+                                      condition: ScalarOperator;
+                                      decimals: number;
+                                    } | null;
+                                    follow?: {
+                                      __typename?: "FollowConditionOutput";
+                                      profileId: any;
+                                    } | null;
+                                    collect?: {
+                                      __typename?: "CollectConditionOutput";
+                                      publicationId?: any | null;
+                                      thisPublication?: boolean | null;
+                                    } | null;
+                                  }>;
+                                } | null;
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                          };
+                        } | null;
+                      };
+                    };
+              }
+            | {
+                __typename?: "Mirror";
+                id: any;
+                reaction?: ReactionTypes | null;
+                hidden: boolean;
+                createdAt: any;
+                appId?: any | null;
+                profile: {
+                  __typename?: "Profile";
+                  id: any;
+                  name?: string | null;
+                  handle: any;
+                  bio?: string | null;
+                  ownedBy: any;
+                  isFollowedByMe: boolean;
+                  stats: {
+                    __typename?: "ProfileStats";
+                    totalFollowers: number;
+                    totalFollowing: number;
+                  };
+                  attributes?: Array<{
+                    __typename?: "Attribute";
+                    key: string;
+                    value: string;
+                  }> | null;
+                  picture?:
+                    | {
+                        __typename?: "MediaSet";
+                        original: { __typename?: "Media"; url: any };
+                      }
+                    | { __typename?: "NftImage"; uri: any }
+                    | null;
+                  followModule?:
+                    | { __typename: "FeeFollowModuleSettings" }
+                    | { __typename: "ProfileFollowModuleSettings" }
+                    | { __typename: "RevertFollowModuleSettings" }
+                    | { __typename: "UnknownFollowModuleSettings" }
+                    | null;
+                };
+                canComment: {
+                  __typename?: "CanCommentResponse";
+                  result: boolean;
+                };
+                canMirror: {
+                  __typename?: "CanMirrorResponse";
+                  result: boolean;
+                };
+                canDecrypt: {
+                  __typename?: "CanDecryptResponse";
+                  result: boolean;
+                  reasons?: Array<DecryptFailReason> | null;
+                };
+                collectModule:
+                  | {
+                      __typename?: "FeeCollectModuleSettings";
+                      type: CollectModules;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | {
+                      __typename?: "FreeCollectModuleSettings";
+                      type: CollectModules;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                    }
+                  | {
+                      __typename?: "LimitedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      collectLimit: string;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | {
+                      __typename?: "LimitedTimedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      collectLimit: string;
+                      endTimestamp: any;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | { __typename?: "RevertCollectModuleSettings" }
+                  | {
+                      __typename?: "TimedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      endTimestamp: any;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | { __typename?: "UnknownCollectModuleSettings" };
+                stats: {
+                  __typename?: "PublicationStats";
+                  totalUpvotes: number;
+                  totalAmountOfMirrors: number;
+                  totalAmountOfCollects: number;
+                  totalAmountOfComments: number;
+                };
+                metadata: {
+                  __typename?: "MetadataOutput";
+                  name?: string | null;
+                  description?: any | null;
+                  content?: any | null;
+                  image?: any | null;
+                  attributes: Array<{
+                    __typename?: "MetadataAttributeOutput";
+                    traitType?: string | null;
+                    value?: string | null;
+                  }>;
+                  cover?: {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  } | null;
+                  media: Array<{
+                    __typename?: "MediaSet";
+                    original: {
+                      __typename?: "Media";
+                      url: any;
+                      mimeType?: any | null;
+                    };
+                  }>;
+                  encryptionParams?: {
+                    __typename?: "EncryptionParamsOutput";
+                    accessCondition: {
+                      __typename?: "AccessConditionOutput";
+                      or?: {
+                        __typename?: "OrConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          and?: {
+                            __typename?: "AndConditionOutput";
+                            criteria: Array<{
+                              __typename?: "AccessConditionOutput";
+                              nft?: {
+                                __typename?: "NftOwnershipOutput";
+                                contractAddress: any;
+                                chainID: any;
+                                contractType: ContractType;
+                                tokenIds?: Array<any> | null;
+                              } | null;
+                              eoa?: {
+                                __typename?: "EoaOwnershipOutput";
+                                address: any;
+                              } | null;
+                              token?: {
+                                __typename?: "Erc20OwnershipOutput";
+                                contractAddress: any;
+                                amount: string;
+                                chainID: any;
+                                condition: ScalarOperator;
+                                decimals: number;
+                              } | null;
+                              follow?: {
+                                __typename?: "FollowConditionOutput";
+                                profileId: any;
+                              } | null;
+                              collect?: {
+                                __typename?: "CollectConditionOutput";
+                                publicationId?: any | null;
+                                thisPublication?: boolean | null;
+                              } | null;
+                            }>;
+                          } | null;
+                          or?: {
+                            __typename?: "OrConditionOutput";
+                            criteria: Array<{
+                              __typename?: "AccessConditionOutput";
+                              nft?: {
+                                __typename?: "NftOwnershipOutput";
+                                contractAddress: any;
+                                chainID: any;
+                                contractType: ContractType;
+                                tokenIds?: Array<any> | null;
+                              } | null;
+                              eoa?: {
+                                __typename?: "EoaOwnershipOutput";
+                                address: any;
+                              } | null;
+                              token?: {
+                                __typename?: "Erc20OwnershipOutput";
+                                contractAddress: any;
+                                amount: string;
+                                chainID: any;
+                                condition: ScalarOperator;
+                                decimals: number;
+                              } | null;
+                              follow?: {
+                                __typename?: "FollowConditionOutput";
+                                profileId: any;
+                              } | null;
+                              collect?: {
+                                __typename?: "CollectConditionOutput";
+                                publicationId?: any | null;
+                                thisPublication?: boolean | null;
+                              } | null;
+                            }>;
+                          } | null;
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                    };
+                  } | null;
+                };
+                mirrorOf:
+                  | {
+                      __typename?: "Comment";
+                      id: any;
+                      reaction?: ReactionTypes | null;
+                      mirrors: Array<any>;
+                      onChainContentURI: string;
+                      createdAt: any;
+                      profile: {
+                        __typename?: "Profile";
+                        id: any;
+                        name?: string | null;
+                        handle: any;
+                        bio?: string | null;
+                        ownedBy: any;
+                        isFollowedByMe: boolean;
+                        stats: {
+                          __typename?: "ProfileStats";
+                          totalFollowers: number;
+                          totalFollowing: number;
+                        };
+                        attributes?: Array<{
+                          __typename?: "Attribute";
+                          key: string;
+                          value: string;
+                        }> | null;
+                        picture?:
+                          | {
+                              __typename?: "MediaSet";
+                              original: { __typename?: "Media"; url: any };
+                            }
+                          | { __typename?: "NftImage"; uri: any }
+                          | null;
+                        followModule?:
+                          | { __typename: "FeeFollowModuleSettings" }
+                          | { __typename: "ProfileFollowModuleSettings" }
+                          | { __typename: "RevertFollowModuleSettings" }
+                          | { __typename: "UnknownFollowModuleSettings" }
+                          | null;
+                      };
+                      canComment: {
+                        __typename?: "CanCommentResponse";
+                        result: boolean;
+                      };
+                      canMirror: {
+                        __typename?: "CanMirrorResponse";
+                        result: boolean;
+                      };
+                      canDecrypt: {
+                        __typename?: "CanDecryptResponse";
+                        result: boolean;
+                        reasons?: Array<DecryptFailReason> | null;
+                      };
+                      stats: {
+                        __typename?: "PublicationStats";
+                        totalUpvotes: number;
+                        totalAmountOfMirrors: number;
+                        totalAmountOfCollects: number;
+                        totalAmountOfComments: number;
+                      };
+                    }
+                  | {
+                      __typename?: "Post";
+                      id: any;
+                      reaction?: ReactionTypes | null;
+                      mirrors: Array<any>;
+                      hasCollectedByMe: boolean;
+                      onChainContentURI: string;
+                      hidden: boolean;
+                      createdAt: any;
+                      appId?: any | null;
+                      profile: {
+                        __typename?: "Profile";
+                        id: any;
+                        name?: string | null;
+                        handle: any;
+                        bio?: string | null;
+                        ownedBy: any;
+                        isFollowedByMe: boolean;
+                        stats: {
+                          __typename?: "ProfileStats";
+                          totalFollowers: number;
+                          totalFollowing: number;
+                        };
+                        attributes?: Array<{
+                          __typename?: "Attribute";
+                          key: string;
+                          value: string;
+                        }> | null;
+                        picture?:
+                          | {
+                              __typename?: "MediaSet";
+                              original: { __typename?: "Media"; url: any };
+                            }
+                          | { __typename?: "NftImage"; uri: any }
+                          | null;
+                        followModule?:
+                          | { __typename: "FeeFollowModuleSettings" }
+                          | { __typename: "ProfileFollowModuleSettings" }
+                          | { __typename: "RevertFollowModuleSettings" }
+                          | { __typename: "UnknownFollowModuleSettings" }
+                          | null;
+                      };
+                      canComment: {
+                        __typename?: "CanCommentResponse";
+                        result: boolean;
+                      };
+                      canMirror: {
+                        __typename?: "CanMirrorResponse";
+                        result: boolean;
+                      };
+                      canDecrypt: {
+                        __typename?: "CanDecryptResponse";
+                        result: boolean;
+                        reasons?: Array<DecryptFailReason> | null;
+                      };
+                      collectedBy?: {
+                        __typename?: "Wallet";
+                        address: any;
+                        defaultProfile?: {
+                          __typename?: "Profile";
+                          id: any;
+                          name?: string | null;
+                          handle: any;
+                          bio?: string | null;
+                          ownedBy: any;
+                          isFollowedByMe: boolean;
+                          stats: {
+                            __typename?: "ProfileStats";
+                            totalFollowers: number;
+                            totalFollowing: number;
+                          };
+                          attributes?: Array<{
+                            __typename?: "Attribute";
+                            key: string;
+                            value: string;
+                          }> | null;
+                          picture?:
+                            | {
+                                __typename?: "MediaSet";
+                                original: { __typename?: "Media"; url: any };
+                              }
+                            | { __typename?: "NftImage"; uri: any }
+                            | null;
+                          followModule?:
+                            | { __typename: "FeeFollowModuleSettings" }
+                            | { __typename: "ProfileFollowModuleSettings" }
+                            | { __typename: "RevertFollowModuleSettings" }
+                            | { __typename: "UnknownFollowModuleSettings" }
+                            | null;
+                        } | null;
+                      } | null;
+                      collectModule:
+                        | {
+                            __typename?: "FeeCollectModuleSettings";
+                            type: CollectModules;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | {
+                            __typename?: "FreeCollectModuleSettings";
+                            type: CollectModules;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                          }
+                        | {
+                            __typename?: "LimitedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            collectLimit: string;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | {
+                            __typename?: "LimitedTimedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            collectLimit: string;
+                            endTimestamp: any;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | { __typename?: "RevertCollectModuleSettings" }
+                        | {
+                            __typename?: "TimedFeeCollectModuleSettings";
+                            type: CollectModules;
+                            endTimestamp: any;
+                            referralFee: number;
+                            contractAddress: any;
+                            followerOnly: boolean;
+                            amount: {
+                              __typename?: "ModuleFeeAmount";
+                              value: string;
+                              asset: {
+                                __typename?: "Erc20";
+                                symbol: string;
+                                decimals: number;
+                                address: any;
+                              };
+                            };
+                          }
+                        | { __typename?: "UnknownCollectModuleSettings" };
+                      stats: {
+                        __typename?: "PublicationStats";
+                        totalUpvotes: number;
+                        totalAmountOfMirrors: number;
+                        totalAmountOfCollects: number;
+                        totalAmountOfComments: number;
+                      };
+                      metadata: {
+                        __typename?: "MetadataOutput";
+                        name?: string | null;
+                        description?: any | null;
+                        content?: any | null;
+                        image?: any | null;
+                        attributes: Array<{
+                          __typename?: "MetadataAttributeOutput";
+                          traitType?: string | null;
+                          value?: string | null;
+                        }>;
+                        cover?: {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        } | null;
+                        media: Array<{
+                          __typename?: "MediaSet";
+                          original: {
+                            __typename?: "Media";
+                            url: any;
+                            mimeType?: any | null;
+                          };
+                        }>;
+                        encryptionParams?: {
+                          __typename?: "EncryptionParamsOutput";
+                          accessCondition: {
+                            __typename?: "AccessConditionOutput";
+                            or?: {
+                              __typename?: "OrConditionOutput";
+                              criteria: Array<{
+                                __typename?: "AccessConditionOutput";
+                                and?: {
+                                  __typename?: "AndConditionOutput";
+                                  criteria: Array<{
+                                    __typename?: "AccessConditionOutput";
+                                    nft?: {
+                                      __typename?: "NftOwnershipOutput";
+                                      contractAddress: any;
+                                      chainID: any;
+                                      contractType: ContractType;
+                                      tokenIds?: Array<any> | null;
+                                    } | null;
+                                    eoa?: {
+                                      __typename?: "EoaOwnershipOutput";
+                                      address: any;
+                                    } | null;
+                                    token?: {
+                                      __typename?: "Erc20OwnershipOutput";
+                                      contractAddress: any;
+                                      amount: string;
+                                      chainID: any;
+                                      condition: ScalarOperator;
+                                      decimals: number;
+                                    } | null;
+                                    follow?: {
+                                      __typename?: "FollowConditionOutput";
+                                      profileId: any;
+                                    } | null;
+                                    collect?: {
+                                      __typename?: "CollectConditionOutput";
+                                      publicationId?: any | null;
+                                      thisPublication?: boolean | null;
+                                    } | null;
+                                  }>;
+                                } | null;
+                                or?: {
+                                  __typename?: "OrConditionOutput";
+                                  criteria: Array<{
+                                    __typename?: "AccessConditionOutput";
+                                    nft?: {
+                                      __typename?: "NftOwnershipOutput";
+                                      contractAddress: any;
+                                      chainID: any;
+                                      contractType: ContractType;
+                                      tokenIds?: Array<any> | null;
+                                    } | null;
+                                    eoa?: {
+                                      __typename?: "EoaOwnershipOutput";
+                                      address: any;
+                                    } | null;
+                                    token?: {
+                                      __typename?: "Erc20OwnershipOutput";
+                                      contractAddress: any;
+                                      amount: string;
+                                      chainID: any;
+                                      condition: ScalarOperator;
+                                      decimals: number;
+                                    } | null;
+                                    follow?: {
+                                      __typename?: "FollowConditionOutput";
+                                      profileId: any;
+                                    } | null;
+                                    collect?: {
+                                      __typename?: "CollectConditionOutput";
+                                      publicationId?: any | null;
+                                      thisPublication?: boolean | null;
+                                    } | null;
+                                  }>;
+                                } | null;
+                                nft?: {
+                                  __typename?: "NftOwnershipOutput";
+                                  contractAddress: any;
+                                  chainID: any;
+                                  contractType: ContractType;
+                                  tokenIds?: Array<any> | null;
+                                } | null;
+                                eoa?: {
+                                  __typename?: "EoaOwnershipOutput";
+                                  address: any;
+                                } | null;
+                                token?: {
+                                  __typename?: "Erc20OwnershipOutput";
+                                  contractAddress: any;
+                                  amount: string;
+                                  chainID: any;
+                                  condition: ScalarOperator;
+                                  decimals: number;
+                                } | null;
+                                follow?: {
+                                  __typename?: "FollowConditionOutput";
+                                  profileId: any;
+                                } | null;
+                                collect?: {
+                                  __typename?: "CollectConditionOutput";
+                                  publicationId?: any | null;
+                                  thisPublication?: boolean | null;
+                                } | null;
+                              }>;
+                            } | null;
+                          };
+                        } | null;
+                      };
+                    };
+              }
+            | {
+                __typename?: "Post";
+                id: any;
+                reaction?: ReactionTypes | null;
+                mirrors: Array<any>;
+                hasCollectedByMe: boolean;
+                onChainContentURI: string;
+                hidden: boolean;
+                createdAt: any;
+                appId?: any | null;
+                profile: {
+                  __typename?: "Profile";
+                  id: any;
+                  name?: string | null;
+                  handle: any;
+                  bio?: string | null;
+                  ownedBy: any;
+                  isFollowedByMe: boolean;
+                  stats: {
+                    __typename?: "ProfileStats";
+                    totalFollowers: number;
+                    totalFollowing: number;
+                  };
+                  attributes?: Array<{
+                    __typename?: "Attribute";
+                    key: string;
+                    value: string;
+                  }> | null;
+                  picture?:
+                    | {
+                        __typename?: "MediaSet";
+                        original: { __typename?: "Media"; url: any };
+                      }
+                    | { __typename?: "NftImage"; uri: any }
+                    | null;
+                  followModule?:
+                    | { __typename: "FeeFollowModuleSettings" }
+                    | { __typename: "ProfileFollowModuleSettings" }
+                    | { __typename: "RevertFollowModuleSettings" }
+                    | { __typename: "UnknownFollowModuleSettings" }
+                    | null;
+                };
+                canComment: {
+                  __typename?: "CanCommentResponse";
+                  result: boolean;
+                };
+                canMirror: {
+                  __typename?: "CanMirrorResponse";
+                  result: boolean;
+                };
+                canDecrypt: {
+                  __typename?: "CanDecryptResponse";
+                  result: boolean;
+                  reasons?: Array<DecryptFailReason> | null;
+                };
+                collectedBy?: {
+                  __typename?: "Wallet";
+                  address: any;
+                  defaultProfile?: {
+                    __typename?: "Profile";
+                    id: any;
+                    name?: string | null;
+                    handle: any;
+                    bio?: string | null;
+                    ownedBy: any;
+                    isFollowedByMe: boolean;
+                    stats: {
+                      __typename?: "ProfileStats";
+                      totalFollowers: number;
+                      totalFollowing: number;
+                    };
+                    attributes?: Array<{
+                      __typename?: "Attribute";
+                      key: string;
+                      value: string;
+                    }> | null;
+                    picture?:
+                      | {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        }
+                      | { __typename?: "NftImage"; uri: any }
+                      | null;
+                    followModule?:
+                      | { __typename: "FeeFollowModuleSettings" }
+                      | { __typename: "ProfileFollowModuleSettings" }
+                      | { __typename: "RevertFollowModuleSettings" }
+                      | { __typename: "UnknownFollowModuleSettings" }
+                      | null;
+                  } | null;
+                } | null;
+                collectModule:
+                  | {
+                      __typename?: "FeeCollectModuleSettings";
+                      type: CollectModules;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | {
+                      __typename?: "FreeCollectModuleSettings";
+                      type: CollectModules;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                    }
+                  | {
+                      __typename?: "LimitedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      collectLimit: string;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | {
+                      __typename?: "LimitedTimedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      collectLimit: string;
+                      endTimestamp: any;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | { __typename?: "RevertCollectModuleSettings" }
+                  | {
+                      __typename?: "TimedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      endTimestamp: any;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | { __typename?: "UnknownCollectModuleSettings" };
+                stats: {
+                  __typename?: "PublicationStats";
+                  totalUpvotes: number;
+                  totalAmountOfMirrors: number;
+                  totalAmountOfCollects: number;
+                  totalAmountOfComments: number;
+                };
+                metadata: {
+                  __typename?: "MetadataOutput";
+                  name?: string | null;
+                  description?: any | null;
+                  content?: any | null;
+                  image?: any | null;
+                  attributes: Array<{
+                    __typename?: "MetadataAttributeOutput";
+                    traitType?: string | null;
+                    value?: string | null;
+                  }>;
+                  cover?: {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  } | null;
+                  media: Array<{
+                    __typename?: "MediaSet";
+                    original: {
+                      __typename?: "Media";
+                      url: any;
+                      mimeType?: any | null;
+                    };
+                  }>;
+                  encryptionParams?: {
+                    __typename?: "EncryptionParamsOutput";
+                    accessCondition: {
+                      __typename?: "AccessConditionOutput";
+                      or?: {
+                        __typename?: "OrConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          and?: {
+                            __typename?: "AndConditionOutput";
+                            criteria: Array<{
+                              __typename?: "AccessConditionOutput";
+                              nft?: {
+                                __typename?: "NftOwnershipOutput";
+                                contractAddress: any;
+                                chainID: any;
+                                contractType: ContractType;
+                                tokenIds?: Array<any> | null;
+                              } | null;
+                              eoa?: {
+                                __typename?: "EoaOwnershipOutput";
+                                address: any;
+                              } | null;
+                              token?: {
+                                __typename?: "Erc20OwnershipOutput";
+                                contractAddress: any;
+                                amount: string;
+                                chainID: any;
+                                condition: ScalarOperator;
+                                decimals: number;
+                              } | null;
+                              follow?: {
+                                __typename?: "FollowConditionOutput";
+                                profileId: any;
+                              } | null;
+                              collect?: {
+                                __typename?: "CollectConditionOutput";
+                                publicationId?: any | null;
+                                thisPublication?: boolean | null;
+                              } | null;
+                            }>;
+                          } | null;
+                          or?: {
+                            __typename?: "OrConditionOutput";
+                            criteria: Array<{
+                              __typename?: "AccessConditionOutput";
+                              nft?: {
+                                __typename?: "NftOwnershipOutput";
+                                contractAddress: any;
+                                chainID: any;
+                                contractType: ContractType;
+                                tokenIds?: Array<any> | null;
+                              } | null;
+                              eoa?: {
+                                __typename?: "EoaOwnershipOutput";
+                                address: any;
+                              } | null;
+                              token?: {
+                                __typename?: "Erc20OwnershipOutput";
+                                contractAddress: any;
+                                amount: string;
+                                chainID: any;
+                                condition: ScalarOperator;
+                                decimals: number;
+                              } | null;
+                              follow?: {
+                                __typename?: "FollowConditionOutput";
+                                profileId: any;
+                              } | null;
+                              collect?: {
+                                __typename?: "CollectConditionOutput";
+                                publicationId?: any | null;
+                                thisPublication?: boolean | null;
+                              } | null;
+                            }>;
+                          } | null;
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                    };
+                  } | null;
+                };
+              }
+            | null;
+        }
+      | {
+          __typename: "Mirror";
+          id: any;
+          reaction?: ReactionTypes | null;
+          hidden: boolean;
+          createdAt: any;
+          appId?: any | null;
+          profile: {
+            __typename?: "Profile";
+            id: any;
+            name?: string | null;
+            handle: any;
+            bio?: string | null;
+            ownedBy: any;
+            isFollowedByMe: boolean;
+            stats: {
+              __typename?: "ProfileStats";
+              totalFollowers: number;
+              totalFollowing: number;
+            };
+            attributes?: Array<{
+              __typename?: "Attribute";
+              key: string;
+              value: string;
+            }> | null;
+            picture?:
+              | {
+                  __typename?: "MediaSet";
+                  original: { __typename?: "Media"; url: any };
+                }
+              | { __typename?: "NftImage"; uri: any }
+              | null;
+            followModule?:
+              | { __typename: "FeeFollowModuleSettings" }
+              | { __typename: "ProfileFollowModuleSettings" }
+              | { __typename: "RevertFollowModuleSettings" }
+              | { __typename: "UnknownFollowModuleSettings" }
+              | null;
+          };
+          canComment: { __typename?: "CanCommentResponse"; result: boolean };
+          canMirror: { __typename?: "CanMirrorResponse"; result: boolean };
+          canDecrypt: {
+            __typename?: "CanDecryptResponse";
+            result: boolean;
+            reasons?: Array<DecryptFailReason> | null;
+          };
+          collectModule:
+            | {
+                __typename?: "FeeCollectModuleSettings";
+                type: CollectModules;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | {
+                __typename?: "FreeCollectModuleSettings";
+                type: CollectModules;
+                contractAddress: any;
+                followerOnly: boolean;
+              }
+            | {
+                __typename?: "LimitedFeeCollectModuleSettings";
+                type: CollectModules;
+                collectLimit: string;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | {
+                __typename?: "LimitedTimedFeeCollectModuleSettings";
+                type: CollectModules;
+                collectLimit: string;
+                endTimestamp: any;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | { __typename?: "RevertCollectModuleSettings" }
+            | {
+                __typename?: "TimedFeeCollectModuleSettings";
+                type: CollectModules;
+                endTimestamp: any;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | { __typename?: "UnknownCollectModuleSettings" };
+          stats: {
+            __typename?: "PublicationStats";
+            totalUpvotes: number;
+            totalAmountOfMirrors: number;
+            totalAmountOfCollects: number;
+            totalAmountOfComments: number;
+          };
+          metadata: {
+            __typename?: "MetadataOutput";
+            name?: string | null;
+            description?: any | null;
+            content?: any | null;
+            image?: any | null;
+            attributes: Array<{
+              __typename?: "MetadataAttributeOutput";
+              traitType?: string | null;
+              value?: string | null;
+            }>;
+            cover?: {
+              __typename?: "MediaSet";
+              original: { __typename?: "Media"; url: any };
+            } | null;
+            media: Array<{
+              __typename?: "MediaSet";
+              original: {
+                __typename?: "Media";
+                url: any;
+                mimeType?: any | null;
+              };
+            }>;
+            encryptionParams?: {
+              __typename?: "EncryptionParamsOutput";
+              accessCondition: {
+                __typename?: "AccessConditionOutput";
+                or?: {
+                  __typename?: "OrConditionOutput";
+                  criteria: Array<{
+                    __typename?: "AccessConditionOutput";
+                    and?: {
+                      __typename?: "AndConditionOutput";
+                      criteria: Array<{
+                        __typename?: "AccessConditionOutput";
+                        nft?: {
+                          __typename?: "NftOwnershipOutput";
+                          contractAddress: any;
+                          chainID: any;
+                          contractType: ContractType;
+                          tokenIds?: Array<any> | null;
+                        } | null;
+                        eoa?: {
+                          __typename?: "EoaOwnershipOutput";
+                          address: any;
+                        } | null;
+                        token?: {
+                          __typename?: "Erc20OwnershipOutput";
+                          contractAddress: any;
+                          amount: string;
+                          chainID: any;
+                          condition: ScalarOperator;
+                          decimals: number;
+                        } | null;
+                        follow?: {
+                          __typename?: "FollowConditionOutput";
+                          profileId: any;
+                        } | null;
+                        collect?: {
+                          __typename?: "CollectConditionOutput";
+                          publicationId?: any | null;
+                          thisPublication?: boolean | null;
+                        } | null;
+                      }>;
+                    } | null;
+                    or?: {
+                      __typename?: "OrConditionOutput";
+                      criteria: Array<{
+                        __typename?: "AccessConditionOutput";
+                        nft?: {
+                          __typename?: "NftOwnershipOutput";
+                          contractAddress: any;
+                          chainID: any;
+                          contractType: ContractType;
+                          tokenIds?: Array<any> | null;
+                        } | null;
+                        eoa?: {
+                          __typename?: "EoaOwnershipOutput";
+                          address: any;
+                        } | null;
+                        token?: {
+                          __typename?: "Erc20OwnershipOutput";
+                          contractAddress: any;
+                          amount: string;
+                          chainID: any;
+                          condition: ScalarOperator;
+                          decimals: number;
+                        } | null;
+                        follow?: {
+                          __typename?: "FollowConditionOutput";
+                          profileId: any;
+                        } | null;
+                        collect?: {
+                          __typename?: "CollectConditionOutput";
+                          publicationId?: any | null;
+                          thisPublication?: boolean | null;
+                        } | null;
+                      }>;
+                    } | null;
+                    nft?: {
+                      __typename?: "NftOwnershipOutput";
+                      contractAddress: any;
+                      chainID: any;
+                      contractType: ContractType;
+                      tokenIds?: Array<any> | null;
+                    } | null;
+                    eoa?: {
+                      __typename?: "EoaOwnershipOutput";
+                      address: any;
+                    } | null;
+                    token?: {
+                      __typename?: "Erc20OwnershipOutput";
+                      contractAddress: any;
+                      amount: string;
+                      chainID: any;
+                      condition: ScalarOperator;
+                      decimals: number;
+                    } | null;
+                    follow?: {
+                      __typename?: "FollowConditionOutput";
+                      profileId: any;
+                    } | null;
+                    collect?: {
+                      __typename?: "CollectConditionOutput";
+                      publicationId?: any | null;
+                      thisPublication?: boolean | null;
+                    } | null;
+                  }>;
+                } | null;
+              };
+            } | null;
+          };
+          mirrorOf:
+            | {
+                __typename?: "Comment";
+                id: any;
+                reaction?: ReactionTypes | null;
+                mirrors: Array<any>;
+                onChainContentURI: string;
+                createdAt: any;
+                profile: {
+                  __typename?: "Profile";
+                  id: any;
+                  name?: string | null;
+                  handle: any;
+                  bio?: string | null;
+                  ownedBy: any;
+                  isFollowedByMe: boolean;
+                  stats: {
+                    __typename?: "ProfileStats";
+                    totalFollowers: number;
+                    totalFollowing: number;
+                  };
+                  attributes?: Array<{
+                    __typename?: "Attribute";
+                    key: string;
+                    value: string;
+                  }> | null;
+                  picture?:
+                    | {
+                        __typename?: "MediaSet";
+                        original: { __typename?: "Media"; url: any };
+                      }
+                    | { __typename?: "NftImage"; uri: any }
+                    | null;
+                  followModule?:
+                    | { __typename: "FeeFollowModuleSettings" }
+                    | { __typename: "ProfileFollowModuleSettings" }
+                    | { __typename: "RevertFollowModuleSettings" }
+                    | { __typename: "UnknownFollowModuleSettings" }
+                    | null;
+                };
+                canComment: {
+                  __typename?: "CanCommentResponse";
+                  result: boolean;
+                };
+                canMirror: {
+                  __typename?: "CanMirrorResponse";
+                  result: boolean;
+                };
+                canDecrypt: {
+                  __typename?: "CanDecryptResponse";
+                  result: boolean;
+                  reasons?: Array<DecryptFailReason> | null;
+                };
+                stats: {
+                  __typename?: "PublicationStats";
+                  totalUpvotes: number;
+                  totalAmountOfMirrors: number;
+                  totalAmountOfCollects: number;
+                  totalAmountOfComments: number;
+                };
+              }
+            | {
+                __typename?: "Post";
+                id: any;
+                reaction?: ReactionTypes | null;
+                mirrors: Array<any>;
+                hasCollectedByMe: boolean;
+                onChainContentURI: string;
+                hidden: boolean;
+                createdAt: any;
+                appId?: any | null;
+                profile: {
+                  __typename?: "Profile";
+                  id: any;
+                  name?: string | null;
+                  handle: any;
+                  bio?: string | null;
+                  ownedBy: any;
+                  isFollowedByMe: boolean;
+                  stats: {
+                    __typename?: "ProfileStats";
+                    totalFollowers: number;
+                    totalFollowing: number;
+                  };
+                  attributes?: Array<{
+                    __typename?: "Attribute";
+                    key: string;
+                    value: string;
+                  }> | null;
+                  picture?:
+                    | {
+                        __typename?: "MediaSet";
+                        original: { __typename?: "Media"; url: any };
+                      }
+                    | { __typename?: "NftImage"; uri: any }
+                    | null;
+                  followModule?:
+                    | { __typename: "FeeFollowModuleSettings" }
+                    | { __typename: "ProfileFollowModuleSettings" }
+                    | { __typename: "RevertFollowModuleSettings" }
+                    | { __typename: "UnknownFollowModuleSettings" }
+                    | null;
+                };
+                canComment: {
+                  __typename?: "CanCommentResponse";
+                  result: boolean;
+                };
+                canMirror: {
+                  __typename?: "CanMirrorResponse";
+                  result: boolean;
+                };
+                canDecrypt: {
+                  __typename?: "CanDecryptResponse";
+                  result: boolean;
+                  reasons?: Array<DecryptFailReason> | null;
+                };
+                collectedBy?: {
+                  __typename?: "Wallet";
+                  address: any;
+                  defaultProfile?: {
+                    __typename?: "Profile";
+                    id: any;
+                    name?: string | null;
+                    handle: any;
+                    bio?: string | null;
+                    ownedBy: any;
+                    isFollowedByMe: boolean;
+                    stats: {
+                      __typename?: "ProfileStats";
+                      totalFollowers: number;
+                      totalFollowing: number;
+                    };
+                    attributes?: Array<{
+                      __typename?: "Attribute";
+                      key: string;
+                      value: string;
+                    }> | null;
+                    picture?:
+                      | {
+                          __typename?: "MediaSet";
+                          original: { __typename?: "Media"; url: any };
+                        }
+                      | { __typename?: "NftImage"; uri: any }
+                      | null;
+                    followModule?:
+                      | { __typename: "FeeFollowModuleSettings" }
+                      | { __typename: "ProfileFollowModuleSettings" }
+                      | { __typename: "RevertFollowModuleSettings" }
+                      | { __typename: "UnknownFollowModuleSettings" }
+                      | null;
+                  } | null;
+                } | null;
+                collectModule:
+                  | {
+                      __typename?: "FeeCollectModuleSettings";
+                      type: CollectModules;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | {
+                      __typename?: "FreeCollectModuleSettings";
+                      type: CollectModules;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                    }
+                  | {
+                      __typename?: "LimitedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      collectLimit: string;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | {
+                      __typename?: "LimitedTimedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      collectLimit: string;
+                      endTimestamp: any;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | { __typename?: "RevertCollectModuleSettings" }
+                  | {
+                      __typename?: "TimedFeeCollectModuleSettings";
+                      type: CollectModules;
+                      endTimestamp: any;
+                      referralFee: number;
+                      contractAddress: any;
+                      followerOnly: boolean;
+                      amount: {
+                        __typename?: "ModuleFeeAmount";
+                        value: string;
+                        asset: {
+                          __typename?: "Erc20";
+                          symbol: string;
+                          decimals: number;
+                          address: any;
+                        };
+                      };
+                    }
+                  | { __typename?: "UnknownCollectModuleSettings" };
+                stats: {
+                  __typename?: "PublicationStats";
+                  totalUpvotes: number;
+                  totalAmountOfMirrors: number;
+                  totalAmountOfCollects: number;
+                  totalAmountOfComments: number;
+                };
+                metadata: {
+                  __typename?: "MetadataOutput";
+                  name?: string | null;
+                  description?: any | null;
+                  content?: any | null;
+                  image?: any | null;
+                  attributes: Array<{
+                    __typename?: "MetadataAttributeOutput";
+                    traitType?: string | null;
+                    value?: string | null;
+                  }>;
+                  cover?: {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  } | null;
+                  media: Array<{
+                    __typename?: "MediaSet";
+                    original: {
+                      __typename?: "Media";
+                      url: any;
+                      mimeType?: any | null;
+                    };
+                  }>;
+                  encryptionParams?: {
+                    __typename?: "EncryptionParamsOutput";
+                    accessCondition: {
+                      __typename?: "AccessConditionOutput";
+                      or?: {
+                        __typename?: "OrConditionOutput";
+                        criteria: Array<{
+                          __typename?: "AccessConditionOutput";
+                          and?: {
+                            __typename?: "AndConditionOutput";
+                            criteria: Array<{
+                              __typename?: "AccessConditionOutput";
+                              nft?: {
+                                __typename?: "NftOwnershipOutput";
+                                contractAddress: any;
+                                chainID: any;
+                                contractType: ContractType;
+                                tokenIds?: Array<any> | null;
+                              } | null;
+                              eoa?: {
+                                __typename?: "EoaOwnershipOutput";
+                                address: any;
+                              } | null;
+                              token?: {
+                                __typename?: "Erc20OwnershipOutput";
+                                contractAddress: any;
+                                amount: string;
+                                chainID: any;
+                                condition: ScalarOperator;
+                                decimals: number;
+                              } | null;
+                              follow?: {
+                                __typename?: "FollowConditionOutput";
+                                profileId: any;
+                              } | null;
+                              collect?: {
+                                __typename?: "CollectConditionOutput";
+                                publicationId?: any | null;
+                                thisPublication?: boolean | null;
+                              } | null;
+                            }>;
+                          } | null;
+                          or?: {
+                            __typename?: "OrConditionOutput";
+                            criteria: Array<{
+                              __typename?: "AccessConditionOutput";
+                              nft?: {
+                                __typename?: "NftOwnershipOutput";
+                                contractAddress: any;
+                                chainID: any;
+                                contractType: ContractType;
+                                tokenIds?: Array<any> | null;
+                              } | null;
+                              eoa?: {
+                                __typename?: "EoaOwnershipOutput";
+                                address: any;
+                              } | null;
+                              token?: {
+                                __typename?: "Erc20OwnershipOutput";
+                                contractAddress: any;
+                                amount: string;
+                                chainID: any;
+                                condition: ScalarOperator;
+                                decimals: number;
+                              } | null;
+                              follow?: {
+                                __typename?: "FollowConditionOutput";
+                                profileId: any;
+                              } | null;
+                              collect?: {
+                                __typename?: "CollectConditionOutput";
+                                publicationId?: any | null;
+                                thisPublication?: boolean | null;
+                              } | null;
+                            }>;
+                          } | null;
+                          nft?: {
+                            __typename?: "NftOwnershipOutput";
+                            contractAddress: any;
+                            chainID: any;
+                            contractType: ContractType;
+                            tokenIds?: Array<any> | null;
+                          } | null;
+                          eoa?: {
+                            __typename?: "EoaOwnershipOutput";
+                            address: any;
+                          } | null;
+                          token?: {
+                            __typename?: "Erc20OwnershipOutput";
+                            contractAddress: any;
+                            amount: string;
+                            chainID: any;
+                            condition: ScalarOperator;
+                            decimals: number;
+                          } | null;
+                          follow?: {
+                            __typename?: "FollowConditionOutput";
+                            profileId: any;
+                          } | null;
+                          collect?: {
+                            __typename?: "CollectConditionOutput";
+                            publicationId?: any | null;
+                            thisPublication?: boolean | null;
+                          } | null;
+                        }>;
+                      } | null;
+                    };
+                  } | null;
+                };
+              };
+        }
+      | {
+          __typename: "Post";
+          id: any;
+          reaction?: ReactionTypes | null;
+          mirrors: Array<any>;
+          hasCollectedByMe: boolean;
+          onChainContentURI: string;
+          hidden: boolean;
+          createdAt: any;
+          appId?: any | null;
+          profile: {
+            __typename?: "Profile";
+            id: any;
+            name?: string | null;
+            handle: any;
+            bio?: string | null;
+            ownedBy: any;
+            isFollowedByMe: boolean;
+            stats: {
+              __typename?: "ProfileStats";
+              totalFollowers: number;
+              totalFollowing: number;
+            };
+            attributes?: Array<{
+              __typename?: "Attribute";
+              key: string;
+              value: string;
+            }> | null;
+            picture?:
+              | {
+                  __typename?: "MediaSet";
+                  original: { __typename?: "Media"; url: any };
+                }
+              | { __typename?: "NftImage"; uri: any }
+              | null;
+            followModule?:
+              | { __typename: "FeeFollowModuleSettings" }
+              | { __typename: "ProfileFollowModuleSettings" }
+              | { __typename: "RevertFollowModuleSettings" }
+              | { __typename: "UnknownFollowModuleSettings" }
+              | null;
+          };
+          canComment: { __typename?: "CanCommentResponse"; result: boolean };
+          canMirror: { __typename?: "CanMirrorResponse"; result: boolean };
+          canDecrypt: {
+            __typename?: "CanDecryptResponse";
+            result: boolean;
+            reasons?: Array<DecryptFailReason> | null;
+          };
+          collectedBy?: {
+            __typename?: "Wallet";
+            address: any;
+            defaultProfile?: {
+              __typename?: "Profile";
+              id: any;
+              name?: string | null;
+              handle: any;
+              bio?: string | null;
+              ownedBy: any;
+              isFollowedByMe: boolean;
+              stats: {
+                __typename?: "ProfileStats";
+                totalFollowers: number;
+                totalFollowing: number;
+              };
+              attributes?: Array<{
+                __typename?: "Attribute";
+                key: string;
+                value: string;
+              }> | null;
+              picture?:
+                | {
+                    __typename?: "MediaSet";
+                    original: { __typename?: "Media"; url: any };
+                  }
+                | { __typename?: "NftImage"; uri: any }
+                | null;
+              followModule?:
+                | { __typename: "FeeFollowModuleSettings" }
+                | { __typename: "ProfileFollowModuleSettings" }
+                | { __typename: "RevertFollowModuleSettings" }
+                | { __typename: "UnknownFollowModuleSettings" }
+                | null;
+            } | null;
+          } | null;
+          collectModule:
+            | {
+                __typename?: "FeeCollectModuleSettings";
+                type: CollectModules;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | {
+                __typename?: "FreeCollectModuleSettings";
+                type: CollectModules;
+                contractAddress: any;
+                followerOnly: boolean;
+              }
+            | {
+                __typename?: "LimitedFeeCollectModuleSettings";
+                type: CollectModules;
+                collectLimit: string;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | {
+                __typename?: "LimitedTimedFeeCollectModuleSettings";
+                type: CollectModules;
+                collectLimit: string;
+                endTimestamp: any;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | { __typename?: "RevertCollectModuleSettings" }
+            | {
+                __typename?: "TimedFeeCollectModuleSettings";
+                type: CollectModules;
+                endTimestamp: any;
+                referralFee: number;
+                contractAddress: any;
+                followerOnly: boolean;
+                amount: {
+                  __typename?: "ModuleFeeAmount";
+                  value: string;
+                  asset: {
+                    __typename?: "Erc20";
+                    symbol: string;
+                    decimals: number;
+                    address: any;
+                  };
+                };
+              }
+            | { __typename?: "UnknownCollectModuleSettings" };
+          stats: {
+            __typename?: "PublicationStats";
+            totalUpvotes: number;
+            totalAmountOfMirrors: number;
+            totalAmountOfCollects: number;
+            totalAmountOfComments: number;
+          };
+          metadata: {
+            __typename?: "MetadataOutput";
+            name?: string | null;
+            description?: any | null;
+            content?: any | null;
+            image?: any | null;
+            attributes: Array<{
+              __typename?: "MetadataAttributeOutput";
+              traitType?: string | null;
+              value?: string | null;
+            }>;
+            cover?: {
+              __typename?: "MediaSet";
+              original: { __typename?: "Media"; url: any };
+            } | null;
+            media: Array<{
+              __typename?: "MediaSet";
+              original: {
+                __typename?: "Media";
+                url: any;
+                mimeType?: any | null;
+              };
+            }>;
+            encryptionParams?: {
+              __typename?: "EncryptionParamsOutput";
+              accessCondition: {
+                __typename?: "AccessConditionOutput";
+                or?: {
+                  __typename?: "OrConditionOutput";
+                  criteria: Array<{
+                    __typename?: "AccessConditionOutput";
+                    and?: {
+                      __typename?: "AndConditionOutput";
+                      criteria: Array<{
+                        __typename?: "AccessConditionOutput";
+                        nft?: {
+                          __typename?: "NftOwnershipOutput";
+                          contractAddress: any;
+                          chainID: any;
+                          contractType: ContractType;
+                          tokenIds?: Array<any> | null;
+                        } | null;
+                        eoa?: {
+                          __typename?: "EoaOwnershipOutput";
+                          address: any;
+                        } | null;
+                        token?: {
+                          __typename?: "Erc20OwnershipOutput";
+                          contractAddress: any;
+                          amount: string;
+                          chainID: any;
+                          condition: ScalarOperator;
+                          decimals: number;
+                        } | null;
+                        follow?: {
+                          __typename?: "FollowConditionOutput";
+                          profileId: any;
+                        } | null;
+                        collect?: {
+                          __typename?: "CollectConditionOutput";
+                          publicationId?: any | null;
+                          thisPublication?: boolean | null;
+                        } | null;
+                      }>;
+                    } | null;
+                    or?: {
+                      __typename?: "OrConditionOutput";
+                      criteria: Array<{
+                        __typename?: "AccessConditionOutput";
+                        nft?: {
+                          __typename?: "NftOwnershipOutput";
+                          contractAddress: any;
+                          chainID: any;
+                          contractType: ContractType;
+                          tokenIds?: Array<any> | null;
+                        } | null;
+                        eoa?: {
+                          __typename?: "EoaOwnershipOutput";
+                          address: any;
+                        } | null;
+                        token?: {
+                          __typename?: "Erc20OwnershipOutput";
+                          contractAddress: any;
+                          amount: string;
+                          chainID: any;
+                          condition: ScalarOperator;
+                          decimals: number;
+                        } | null;
+                        follow?: {
+                          __typename?: "FollowConditionOutput";
+                          profileId: any;
+                        } | null;
+                        collect?: {
+                          __typename?: "CollectConditionOutput";
+                          publicationId?: any | null;
+                          thisPublication?: boolean | null;
+                        } | null;
+                      }>;
+                    } | null;
+                    nft?: {
+                      __typename?: "NftOwnershipOutput";
+                      contractAddress: any;
+                      chainID: any;
+                      contractType: ContractType;
+                      tokenIds?: Array<any> | null;
+                    } | null;
+                    eoa?: {
+                      __typename?: "EoaOwnershipOutput";
+                      address: any;
+                    } | null;
+                    token?: {
+                      __typename?: "Erc20OwnershipOutput";
+                      contractAddress: any;
+                      amount: string;
+                      chainID: any;
+                      condition: ScalarOperator;
+                      decimals: number;
+                    } | null;
+                    follow?: {
+                      __typename?: "FollowConditionOutput";
+                      profileId: any;
+                    } | null;
+                    collect?: {
+                      __typename?: "CollectConditionOutput";
+                      publicationId?: any | null;
+                      thisPublication?: boolean | null;
+                    } | null;
+                  }>;
+                } | null;
+              };
+            } | null;
+          };
+        }
+    >;
+    pageInfo: {
+      __typename?: "PaginatedResultInfo";
+      prev?: any | null;
+      next?: any | null;
+      totalCount?: number | null;
+    };
+  };
 };
 
 export type ProfileSettingsQueryVariables = Exact<{
@@ -35429,6 +42390,9 @@ export const ExploreProfilesDocument = gql`
               url
             }
           }
+          ... on NftImage {
+            uri
+          }
         }
         handle
         stats {
@@ -36546,6 +43510,7 @@ export const ProfileDocument = gql`
       bio
       metadata
       followNftAddress
+      isDefault
       isFollowedByMe
       isFollowing(who: $who)
       attributes {
@@ -36836,6 +43801,185 @@ export type ProfileInterestsLazyQueryHookResult = ReturnType<
 export type ProfileInterestsQueryResult = Apollo.QueryResult<
   ProfileInterestsQuery,
   ProfileInterestsQueryVariables
+>;
+export const ProfilePublicationRevenueDocument = gql`
+  query ProfilePublicationRevenue(
+    $request: ProfilePublicationRevenueQueryRequest!
+    $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
+  ) {
+    profilePublicationRevenue(request: $request) {
+      items {
+        publication {
+          __typename
+          ... on Post {
+            ...PostFields
+          }
+          ... on Comment {
+            ...CommentFields
+          }
+          ... on Mirror {
+            ...MirrorFields
+          }
+        }
+        revenue {
+          total {
+            asset {
+              name
+              symbol
+              decimals
+              address
+            }
+            value
+          }
+        }
+      }
+      pageInfo {
+        prev
+        next
+        totalCount
+      }
+    }
+  }
+  ${PostFieldsFragmentDoc}
+  ${CommentFieldsFragmentDoc}
+  ${MirrorFieldsFragmentDoc}
+`;
+
+/**
+ * __useProfilePublicationRevenueQuery__
+ *
+ * To run a query within a React component, call `useProfilePublicationRevenueQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfilePublicationRevenueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProfilePublicationRevenueQuery({
+ *   variables: {
+ *      request: // value for 'request'
+ *      reactionRequest: // value for 'reactionRequest'
+ *      profileId: // value for 'profileId'
+ *   },
+ * });
+ */
+export function useProfilePublicationRevenueQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    ProfilePublicationRevenueQuery,
+    ProfilePublicationRevenueQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    ProfilePublicationRevenueQuery,
+    ProfilePublicationRevenueQueryVariables
+  >(ProfilePublicationRevenueDocument, options);
+}
+export function useProfilePublicationRevenueLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ProfilePublicationRevenueQuery,
+    ProfilePublicationRevenueQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    ProfilePublicationRevenueQuery,
+    ProfilePublicationRevenueQueryVariables
+  >(ProfilePublicationRevenueDocument, options);
+}
+export type ProfilePublicationRevenueQueryHookResult = ReturnType<
+  typeof useProfilePublicationRevenueQuery
+>;
+export type ProfilePublicationRevenueLazyQueryHookResult = ReturnType<
+  typeof useProfilePublicationRevenueLazyQuery
+>;
+export type ProfilePublicationRevenueQueryResult = Apollo.QueryResult<
+  ProfilePublicationRevenueQuery,
+  ProfilePublicationRevenueQueryVariables
+>;
+export const ProfilePublicationsDocument = gql`
+  query ProfilePublications(
+    $request: PublicationsQueryRequest!
+    $reactionRequest: ReactionFieldResolverRequest
+    $profileId: ProfileId
+  ) {
+    publications(request: $request) {
+      items {
+        __typename
+        ... on Post {
+          ...PostFields
+        }
+        ... on Comment {
+          ...CommentFields
+        }
+        ... on Mirror {
+          ...MirrorFields
+        }
+      }
+      pageInfo {
+        prev
+        next
+        totalCount
+      }
+    }
+  }
+  ${PostFieldsFragmentDoc}
+  ${CommentFieldsFragmentDoc}
+  ${MirrorFieldsFragmentDoc}
+`;
+
+/**
+ * __useProfilePublicationsQuery__
+ *
+ * To run a query within a React component, call `useProfilePublicationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfilePublicationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProfilePublicationsQuery({
+ *   variables: {
+ *      request: // value for 'request'
+ *      reactionRequest: // value for 'reactionRequest'
+ *      profileId: // value for 'profileId'
+ *   },
+ * });
+ */
+export function useProfilePublicationsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    ProfilePublicationsQuery,
+    ProfilePublicationsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    ProfilePublicationsQuery,
+    ProfilePublicationsQueryVariables
+  >(ProfilePublicationsDocument, options);
+}
+export function useProfilePublicationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ProfilePublicationsQuery,
+    ProfilePublicationsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    ProfilePublicationsQuery,
+    ProfilePublicationsQueryVariables
+  >(ProfilePublicationsDocument, options);
+}
+export type ProfilePublicationsQueryHookResult = ReturnType<
+  typeof useProfilePublicationsQuery
+>;
+export type ProfilePublicationsLazyQueryHookResult = ReturnType<
+  typeof useProfilePublicationsLazyQuery
+>;
+export type ProfilePublicationsQueryResult = Apollo.QueryResult<
+  ProfilePublicationsQuery,
+  ProfilePublicationsQueryVariables
 >;
 export const ProfileSettingsDocument = gql`
   query ProfileSettings($request: SingleProfileQueryRequest!) {
