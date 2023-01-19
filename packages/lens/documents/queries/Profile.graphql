@@ -40,6 +40,7 @@ query Profile($request: SingleProfileQueryRequest!, $who: ProfileId) {
       totalPosts
       totalComments
       totalMirrors
+      totalCollects
     }
     picture {
       ... on MediaSet {
