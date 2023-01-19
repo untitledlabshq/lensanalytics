@@ -1,10 +1,12 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
+import formatHandle from "@lib/formatHandle";
 import getAvatar from "@lib/getAvatar";
 import { toTitleCase } from "@lib/toTitleCase";
 import { createColumnHelper } from "@tanstack/react-table";
 import type { Profile } from "lens";
 import { ProfileSortCriteria, useExploreProfilesQuery } from "lens";
+import Link from "next/link";
 import type { FC } from "react";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { leaderboardState } from "src/store/leaderboard";
@@ -21,8 +23,6 @@ const Leaderboard: FC<Props> = ({ className }) => {
   const sortBy = leaderboardState((state) => state.sortBy);
   const offset = leaderboardState((state) => state.offset);
   const currentPageInfo = leaderboardState((state) => state.currentPageInfo);
-  const [focused, setFocused] = useState(false);
-  const [searchText, setSearchText] = useState<string | undefined>();
 
   const setSortBy = leaderboardState((state) => state.setSortBy);
   const setOffset = leaderboardState((state) => state.setOffset);
@@ -33,17 +33,6 @@ const Leaderboard: FC<Props> = ({ className }) => {
   const { data, loading } = useExploreProfilesQuery({
     variables: { request: { sortCriteria: sortBy, limit: 10, cursor: offset } },
   });
-
-  //   const { data: searchedProfiles, loading: searchLoading } =
-  //     useSearchProfilesQuery({
-  //       variables: {
-  //         request: {
-  //           query: searchText,
-  //           limit: 10,
-  //           type: SearchRequestTypes.Profile,
-  //         },
-  //       },
-  //     });
 
   const profiles = data?.exploreProfiles.items ?? Array(10).map(() => ({}));
 
@@ -77,7 +66,7 @@ const Leaderboard: FC<Props> = ({ className }) => {
   const columnHelper = createColumnHelper<Profile>();
   const columns = useMemo(
     () => [
-      columnHelper.accessor((row) => ``, {
+      columnHelper.accessor(() => ``, {
         cell: (info) =>
           loading ? (
             <Shimmer>
@@ -103,27 +92,29 @@ const Leaderboard: FC<Props> = ({ className }) => {
                 </div>
               </Shimmer>
             ) : (
-              <div className="flex items-center space-x-3">
-                {info.getValue() && info.getValue().picture ? (
-                  <img
-                    src={getAvatar(info.getValue())}
-                    alt={info.getValue().handle}
-                    className="w-8 h-8 rounded-full"
-                  />
-                ) : (
-                  <div className="w-8 h-8 bg-slate-200 rounded-full" />
-                )}
-                <div className="flex flex-col">
-                  <span>
-                    {info.getValue().name ?? `@${info.getValue().handle}`}
-                  </span>
-                  {info.getValue().name && (
-                    <span className="text-slate-500 text-xs">
-                      @{info.getValue().handle}
-                    </span>
+              <Link href={`/u/${formatHandle(info.getValue().handle)}`}>
+                <div className="flex items-center space-x-3">
+                  {info.getValue() && info.getValue().picture ? (
+                    <img
+                      src={getAvatar(info.getValue())}
+                      alt={info.getValue().handle}
+                      className="w-8 h-8 rounded-full"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 bg-slate-200 rounded-full" />
                   )}
+                  <div className="flex flex-col">
+                    <span>
+                      {info.getValue().name ?? `@${info.getValue().handle}`}
+                    </span>
+                    {info.getValue().name && (
+                      <span className="text-slate-500 text-xs">
+                        @{info.getValue().handle}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </Link>
             )}
           </div>
         ),
