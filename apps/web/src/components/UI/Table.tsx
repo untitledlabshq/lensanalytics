@@ -20,15 +20,15 @@ const Table: FC<Props> = ({ columns, data }) => {
   });
 
   return (
-    <div className="rounded-lg border border-slate-200">
-      <table className="border-collapse table-auto w-full bg-white text-sm rounded-lg overflow-hidden">
-        <thead className="bg-slate-50">
+    <div className="border border-slate-200">
+      <table className="border-collapse table-auto w-full bg-white text-sm">
+        <thead className="border-b border-slate-200">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="border-slate-200 font-semibold p-4 text-slate-900 text-left"
+                  className="border-slate-200 font-normal text-xs p-4 text-slate-500 text-left"
                 >
                   {header.isPlaceholder
                     ? null
