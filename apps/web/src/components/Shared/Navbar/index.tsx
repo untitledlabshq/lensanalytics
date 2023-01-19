@@ -16,13 +16,13 @@ const Navbar = () => {
               width={24}
               height={24}
             />
-            <h1 className="text-lg text-slate-900 font-semibold leading-none">
+            <h1 className="text-lg text-slate-900 font-semibold leading-none hidden md:block">
               Lens Analytics
             </h1>
           </div>
         </Link>
         {/* Search Bar */}
-        <div className="flex-1 w-full md:max-w-[30%]">
+        <div className="flex-1 w-full max-w-[60%] md:max-w-[30%] ml-4">
           <Search />
         </div>
       </div>
