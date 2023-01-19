@@ -92,7 +92,7 @@ const PostsTable: FC<Props> = ({ className, profileId }) => {
                     <img
                       src={getPublicationThumbnail(info.getValue())}
                       alt={info.getValue().id}
-                      className="min-w-[96px] min-h-[48px] max-h-[48px] rounded-sm object-cover"
+                      className="min-w-[96px] max-w-[96px] min-h-[48px] max-h-[48px] rounded-sm object-cover"
                     />
                   ) : (
                     <div className="bg-slate-100 border border-slate-200 min-w-[96px] min-h-[48px] max-h-[48px] rounded-sm" />
