@@ -17,7 +17,7 @@ const Layout: FC<Props> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen md:pb-0 pb-14 bg-slate-50/50">
       <Navbar />
-      <div className="w-full md:max-w-6xl mx-auto p-4 md:px-0">{children}</div>
+      <div className="w-full md:max-w-6xl mx-auto p-4 lg:px-0">{children}</div>
     </div>
   );
 };
