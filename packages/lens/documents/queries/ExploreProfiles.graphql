@@ -9,6 +9,9 @@ query ExploreProfiles($request: ExploreProfilesRequest!) {
             url
           }
         }
+        ... on NftImage {
+        uri
+        }
       }
       handle
       stats {
