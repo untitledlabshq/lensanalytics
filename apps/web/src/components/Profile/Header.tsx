@@ -51,12 +51,6 @@ const Header: FC<Props> = ({ profile }) => {
               {profile?.stats.totalComments.toLocaleString("en-US")}
             </span>
           </div>
-          {/* <div className="flex flex-col space-y-1 items-end">
-            <span className="text-sm text-slate-500">Revenue</span>
-            <span className="text-3xl font-light text-slate-800">
-              ${Number(0).toLocaleString("en-US")}
-            </span>
-          </div> */}
         </div>
       </div>
     </div>
