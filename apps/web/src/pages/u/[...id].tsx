@@ -1,7 +1,7 @@
 import Header from "@components/Profile/Header";
 import PostsTable from "@components/Profile/PostsTable";
 import formatHandle from "@lib/formatHandle";
-import { useProfileQuery } from "lens";
+import { Profile, useProfileQuery } from "lens";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -26,7 +26,7 @@ const Profile = () => {
   return (
     <div>
       {profile ? (
-        <div>{profile && <Header profile={profile} />}</div>
+        <div>{profile && <Header profile={profile as Profile} />}</div>
       ) : (
         <div>No User Found</div>
       )}
