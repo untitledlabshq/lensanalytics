@@ -1,0 +1,38 @@
+query ProfilePublicationRevenue(
+  $request: ProfilePublicationRevenueQueryRequest!,
+  $reactionRequest: ReactionFieldResolverRequest,
+  $profileId: ProfileId
+) {
+  profilePublicationRevenue(request: $request) {
+    items {
+      publication {
+        __typename
+        ... on Post {
+          ...PostFields
+        }
+        ... on Comment {
+          ...CommentFields
+        }
+        ... on Mirror {
+          ...MirrorFields
+        }
+      }
+      revenue {
+        total {
+          asset {
+            name
+            symbol
+            decimals
+            address
+          }
+          value
+        }
+      }
+    }
+    pageInfo {
+      prev
+      next
+      totalCount
+    }
+  }
+}
