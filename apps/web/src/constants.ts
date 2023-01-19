@@ -13,3 +13,6 @@ export const IPFS_GATEWAY = "https://lens.infura-ipfs.io/ipfs/";
 
 // Sources
 export const LENS_SOURCES = ["phaver", "lenster", "lentube", "orb", "lensport"];
+
+// Misc
+export const LENSPROTOCOL_HANDLE = "lensprotocol";
