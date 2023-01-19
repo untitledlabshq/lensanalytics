@@ -10,6 +10,13 @@ class LensAnalyticsDocument extends Document {
 
           {/* Favicon */}
           <link rel="shortcut icon" href="/favicon.ico" />
+
+          {/* Plausible */}
+          <script
+            defer
+            data-domain="lensanalytics.xyz,lensverse.web"
+            src="https://plausible.io/js/script.js"
+          />
         </Head>
         <body>
           <Main />
