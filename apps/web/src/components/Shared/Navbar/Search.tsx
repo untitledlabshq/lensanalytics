@@ -31,7 +31,7 @@ const Search = () => {
   );
 
   return (
-    <div className="relative">
+    <div className="w-full relative">
       <div
         className={clsx(
           "flex items-center space-x-2 border rounded-md p-2",
