@@ -16,3 +16,4 @@ export const LENS_SOURCES = ["phaver", "lenster", "lentube", "orb", "lensport"];
 
 // Misc
 export const LENSPROTOCOL_HANDLE = "lensprotocol";
+export const GIT_REPO = "https://github.com/addresszero/lensanalytics";
