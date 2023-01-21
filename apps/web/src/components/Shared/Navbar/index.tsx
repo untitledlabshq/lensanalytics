@@ -1,4 +1,7 @@
+import GithubLogo from "@assets/github.svg";
+import Image from "next/image";
 import Link from "next/link";
+import { GIT_REPO } from "src/constants";
 
 import Search from "./Search";
 
@@ -21,9 +24,19 @@ const Navbar = () => {
             </h1>
           </div>
         </Link>
-        {/* Search Bar */}
-        <div className="flex-1 w-full max-w-[60%] md:max-w-[30%] ml-4">
-          <Search />
+        <div className="w-full max-w-[60%] md:max-w-[30%] ml-4">
+          <div className="w-full flex items-center space-x-4">
+            {/* Search Bar */}
+            <Search />
+            <Link href={GIT_REPO} target="_blank" rel="noreferrer">
+              <Image
+                src={GithubLogo}
+                width={24}
+                height={24}
+                alt="github_logo"
+              />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
