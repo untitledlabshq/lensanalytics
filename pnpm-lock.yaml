@@ -16,8 +16,10 @@ importers:
       '@babel/core': ^7.0.0
       '@headlessui/react': ^1.7.7
       '@heroicons/react': ^2.0.13
+      '@popperjs/core': ^2.11.6
       '@tailwindcss/line-clamp': ^0.4.2
       '@tanstack/react-table': ^8.7.4
+      '@tippyjs/react': ^4.2.6
       '@types/node': ^17.0.12
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
@@ -41,7 +43,9 @@ importers:
       '@apollo/client': 3.7.3_gdcq4dv6opitr3wbfwyjmanyra
       '@headlessui/react': 1.7.7_biqbaboplfbrettd7655fr4n2y
       '@heroicons/react': 2.0.13_react@18.2.0
+      '@popperjs/core': 2.11.6
       '@tanstack/react-table': 8.7.4_biqbaboplfbrettd7655fr4n2y
+      '@tippyjs/react': 4.2.6_biqbaboplfbrettd7655fr4n2y
       axios: 1.2.2
       clsx: 1.2.1
       graphql: 16.6.0
@@ -1651,6 +1655,10 @@ packages:
       tslib: 2.4.1
     dev: false
 
+  /@popperjs/core/2.11.6:
+    resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
+    dev: false
+
   /@repeaterjs/repeater/3.0.4:
     resolution: {integrity: sha512-AW8PKd6iX3vAZ0vA43nOUOnbq/X5ihgU+mSXXqunMkeQADGiqw/PY0JNeYtD5sr0PAy51YPgAPbDoeapv9r8WA==}
     dev: true
@@ -1688,6 +1696,17 @@ packages:
   /@tanstack/table-core/8.7.4:
     resolution: {integrity: sha512-OPhzca7e83KGukxLpZ+4F9OBp9CZXi9b/OGJBH8dlC3wpffcSSDczYGUGJKG7wirXQ6cUVYL+9G6UrrdnblKNQ==}
     engines: {node: '>=12'}
+    dev: false
+
+  /@tippyjs/react/4.2.6_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-91RicDR+H7oDSyPycI13q3b7o4O60wa2oRbjlz2fyRLmHImc4vyDwuUP8NtZaN0VARJY5hybvDYrFzhY9+Lbyw==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      tippy.js: 6.3.7
     dev: false
 
   /@tootallnate/once/2.0.0:
@@ -5357,6 +5376,12 @@ packages:
     dependencies:
       globalyzer: 0.1.0
       globrex: 0.1.2
+    dev: false
+
+  /tippy.js/6.3.7:
+    resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==}
+    dependencies:
+      '@popperjs/core': 2.11.6
     dev: false
 
   /title-case/3.0.3:
