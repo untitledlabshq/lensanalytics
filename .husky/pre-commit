@@ -3,3 +3,4 @@
 
 pnpm run lint
 pnpm run typecheck
+npx husky add .husky/commit-msg  'npx --no -- commitlint --edit ${1}'
