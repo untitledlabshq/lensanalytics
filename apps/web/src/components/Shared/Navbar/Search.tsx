@@ -3,13 +3,19 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import formatHandle from "@lib/formatHandle";
 import getAvatar from "@lib/getAvatar";
 import clsx from "clsx";
-import { SearchRequestTypes, useSearchProfilesQuery } from "lens";
+import {
+  SearchRequestTypes,
+  useProfilesQuery,
+  useSearchProfilesQuery,
+} from "lens";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import Web3 from "web3";
 
 const Search = () => {
   const [focused, setFocused] = useState(false);
   const [searchText, setSearchText] = useState<string>("");
+  const web3 = new Web3();
 
   const { data, loading } = useSearchProfilesQuery({
     variables: {
@@ -21,13 +27,24 @@ const Search = () => {
     },
   });
 
+  const profileData = useProfilesQuery({
+    variables: {
+      request: { ownedBy: [searchText] },
+    },
+  });
+
   const items = useMemo(
     () =>
-      data?.search.__typename === "ProfileSearchResult"
+      web3.utils.isAddress(searchText)
+        ? profileData.data?.profiles.items
+          ? profileData.data?.profiles.items
+          : []
+        : data?.search.__typename === "ProfileSearchResult"
         ? data.search.items
         : [],
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data?.search.__typename, (data?.search as any)?.items]
+    [(data?.search.__typename, (data?.search as any)?.items)]
   );
 
   return (

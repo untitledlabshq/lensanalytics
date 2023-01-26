@@ -21,6 +21,7 @@
     "next": "13.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "web3": "^1.8.1",
     "zustand": "^4.2.0"
   },
   "devDependencies": {
