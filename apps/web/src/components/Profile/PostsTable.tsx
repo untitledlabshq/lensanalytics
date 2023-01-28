@@ -1,5 +1,5 @@
+import Thumbnail from "@components/UI/Thumbnail";
 import getPublicationRevenue from "@lib/getPublicationRevenue";
-import getPublicationThumbnail from "@lib/getPublicationThumbnail";
 import getTokenLogo from "@lib/getTokenLogo";
 import { toTitleCase } from "@lib/toTitleCase";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -88,15 +88,7 @@ const PostsTable: FC<Props> = ({ className, profileId }) => {
                 target={"_blank"}
               >
                 <div className="flex space-x-3">
-                  {info.getValue() && info.getValue()?.metadata?.media[0] ? (
-                    <img
-                      src={getPublicationThumbnail(info.getValue())}
-                      alt={info.getValue().id}
-                      className="min-w-[96px] max-w-[96px] min-h-[48px] max-h-[48px] rounded-sm object-cover"
-                    />
-                  ) : (
-                    <div className="bg-slate-100 border border-slate-200 min-w-[96px] min-h-[48px] max-h-[48px] rounded-sm" />
-                  )}
+                  <Thumbnail publication={info.getValue()} />
                   <div className="flex flex-col">
                     <p className="line-clamp-1 font-light text-sm">
                       {info.getValue()?.metadata?.content}
