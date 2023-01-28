@@ -3,6 +3,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import formatHandle from "@lib/formatHandle";
 import getAvatar from "@lib/getAvatar";
 import clsx from "clsx";
+import { ethers } from "ethers";
 import {
   SearchRequestTypes,
   useProfilesQuery,
@@ -10,12 +11,10 @@ import {
 } from "lens";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import Web3 from "web3";
 
 const Search = () => {
   const [focused, setFocused] = useState(false);
   const [searchText, setSearchText] = useState<string>("");
-  const web3 = new Web3();
 
   const { data, loading } = useSearchProfilesQuery({
     variables: {
@@ -35,7 +34,7 @@ const Search = () => {
 
   const items = useMemo(
     () =>
-      web3.utils.isAddress(searchText)
+      ethers.utils.isAddress(searchText)
         ? profileData.data?.profiles.items
           ? profileData.data?.profiles.items
           : []
